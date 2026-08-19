@@ -52,7 +52,6 @@ async function fetchBookText(bookId) {
   if (!textUrl) throw new Error('No plain text available');
 
   // Fetch the text
-  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
   const fullText = await textRes.text();
 
   return {
