@@ -1,5 +1,5 @@
 // Gutenberg API via Gutendex
-const GUTENDEX = 'https://gutendex.com/books';
+const GUTENDEX = 'https://corsproxy.io/?https://gutendex.com/books';
 
 // Curated book IDs by era
 const BOOK_LISTS = {
@@ -52,7 +52,7 @@ async function fetchBookText(bookId) {
   if (!textUrl) throw new Error('No plain text available');
 
   // Fetch the text
-  const textRes = await fetch(textUrl);
+  const textRes = await fetch(`https://corsproxy.io/?${textUrl}`);
   const fullText = await textRes.text();
 
   return {
