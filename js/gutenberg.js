@@ -1,5 +1,5 @@
 // Gutenberg API via Gutendex
-const GUTENDEX = 'https://corsproxy.io/?https://gutendex.com/books';
+const GUTENDEX = 'https://api.allorigins.win/raw?url=https://gutendex.com/books';
 
 // Curated book IDs by era
 const BOOK_LISTS = {
@@ -38,7 +38,7 @@ BOOK_LISTS.all = Object.values(BOOK_LISTS).flat();
 
 async function fetchBookText(bookId) {
   // Get book metadata
-  const metaRes = await fetch(`${GUTENDEX}/books?ids=${bookId}`);
+  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
   const metaData = await metaRes.json();
   const book = metaData.results[0];
   if (!book) throw new Error('Book not found');
@@ -52,7 +52,7 @@ async function fetchBookText(bookId) {
   if (!textUrl) throw new Error('No plain text available');
 
   // Fetch the text
-  const textRes = await fetch(`https://corsproxy.io/?${textUrl}`);
+  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
   const fullText = await textRes.text();
 
   return {
