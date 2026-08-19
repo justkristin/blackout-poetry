@@ -1,0 +1,421 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-dark: #1a1a1a;
+  --bg-darker: #111;
+  --bg-panel: #222;
+  --bg-panel-light: #2a2a2a;
+  --border-dark: #333;
+  --border-mid: #444;
+  --text-light: #faf8f3;
+  --text-mid: #888;
+  --text-dim: #555;
+  --cream: #faf8f3;
+  --font-ui: 'Lexend', Arial, sans-serif;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+  background: var(--bg-darker);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.site-name {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-light);
+  letter-spacing: 0.02em;
+}
+
+.site-tagline {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  letter-spacing: 0.05em;
+}
+
+.header-nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.nav-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  color: var(--text-mid);
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+}
+
+.nav-btn:hover {
+  border-color: var(--border-mid);
+  color: var(--text-light);
+}
+
+.nav-btn-primary {
+  background: var(--cream);
+  color: var(--bg-darker);
+  border-color: var(--cream);
+}
+
+.nav-btn-primary:hover {
+  background: #f0ece4;
+  color: var(--bg-darker);
+}
+
+/* ── LAYOUT ──────────────────────────────── */
+main {
+  flex: 1;
+  padding: 1.25rem 1.5rem;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 1.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* ── FILTER BAR ──────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  color: var(--text-mid);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover {
+  border-color: var(--border-mid);
+  color: var(--text-light);
+}
+
+.filter-btn.active {
+  background: var(--bg-panel-light);
+  border-color: #666;
+  color: var(--text-light);
+}
+
+/* ── LOADING / ERROR ─────────────────────── */
+.loading-state, .error-state {
+  background: var(--bg-panel);
+  border-radius: 4px;
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-mid);
+  font-size: 0.85rem;
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
+/* ── BOOK PAGE ───────────────────────────── */
+.book-page {
+  background: var(--cream);
+  border-radius: 2px;
+  padding: 2rem 2.5rem 1.5rem;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+.book-page-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.book-title {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #666;
+  letter-spacing: 0.05em;
+}
+
+.book-chapter {
+  font-size: 0.7rem;
+  color: #aaa;
+  font-family: var(--font-ui);
+  margin-top: 0.2rem;
+}
+
+#blackout-canvas {
+  display: block;
+  width: 100%;
+  cursor: crosshair;
+}
+
+.book-page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ccc;
+}
+
+.book-author {
+  font-size: 0.7rem;
+  color: #aaa;
+  font-style: italic;
+  font-family: 'Lora', Georgia, serif;
+}
+
+.page-number {
+  font-size: 0.7rem;
+  color: #aaa;
+  font-style: italic;
+  font-family: 'Lora', Georgia, serif;
+}
+
+/* ── PAGE NAV ────────────────────────────── */
+.page-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.page-nav-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  color: var(--text-mid);
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.page-nav-btn:hover {
+  border-color: var(--border-mid);
+  color: var(--text-light);
+}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.sidebar {
+  background: var(--bg-panel);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+  position: sticky;
+  top: 70px;
+}
+
+.sidebar-section {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-title {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-light);
+  letter-spacing: 0.02em;
+}
+
+.sidebar-label {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+
+.sidebar-book-title {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.2rem;
+}
+
+.sidebar-book-author {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+}
+
+/* ── BRUSH BUTTONS ───────────────────────── */
+.brush-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.brush-btn {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-panel-light);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.brush-btn:hover, .brush-btn.active {
+  border-color: #888;
+  background: #333;
+}
+
+.brush-dot {
+  background: var(--cream);
+  border-radius: 50%;
+  display: block;
+}
+
+.brush-sm { width: 6px; height: 6px; }
+.brush-md { width: 10px; height: 10px; }
+.brush-lg { width: 16px; height: 16px; }
+
+/* ── COLOR BUTTONS ───────────────────────── */
+.color-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.color-btn:hover, .color-btn.active {
+  border-color: #aaa;
+  transform: scale(1.1);
+}
+
+/* ── FONT BUTTONS ────────────────────────── */
+.font-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.font-btn {
+  background: var(--bg-panel-light);
+  border: 1px solid var(--border-mid);
+  color: var(--text-mid);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.font-btn:hover, .font-btn.active {
+  border-color: #888;
+  color: var(--text-light);
+  background: #333;
+}
+
+/* ── SIDEBAR ACTIONS ─────────────────────── */
+.sidebar-action-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--bg-panel-light);
+  border: 1px solid var(--border-mid);
+  color: var(--text-mid);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+  text-align: left;
+  transition: all 0.15s;
+  letter-spacing: 0.03em;
+}
+
+.sidebar-action-btn:hover {
+  border-color: #888;
+  color: var(--text-light);
+}
+
+.sidebar-action-primary {
+  background: var(--cream);
+  color: var(--bg-darker);
+  border-color: var(--cream);
+}
+
+.sidebar-action-primary:hover {
+  background: #f0ece4;
+  color: var(--bg-darker);
+}
+
+/* ── ATTRIBUTION ─────────────────────────── */
+.sidebar-attribution {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.sidebar-attribution a {
+  color: var(--text-mid);
+  text-decoration: none;
+}
+
+.sidebar-attribution a:hover {
+  color: var(--text-light);
+}
+
+.sidebar-attribution p {
+  margin-bottom: 0.4rem;
+}

@@ -1,7 +1,153 @@
 <!DOCTYPE html>
-<html>
-<head><title>Blackout Poetry</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blackout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=IM+Fell+English:ital@0;1&family=Lexend&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
-  <h1>Coming soon!</h1>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="site-name">Blackout</span>
+        <span class="site-tagline">every page holds a poem</span>
+      </div>
+      <nav class="header-nav">
+        <button id="btn-new-random" class="nav-btn">↻ random page</button>
+        <button id="btn-save" class="nav-btn nav-btn-primary">↓ save poem</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="app-layout">
+
+      <!-- Book page / canvas area -->
+      <div class="page-area">
+
+        <!-- Era/genre filters -->
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">all eras</button>
+          <button class="filter-btn" data-filter="victorian">victorian</button>
+          <button class="filter-btn" data-filter="romantic">romantic</button>
+          <button class="filter-btn" data-filter="american">american</button>
+          <button class="filter-btn" data-filter="modern">modern</button>
+        </div>
+
+        <!-- Loading state -->
+        <div id="loading-state" class="loading-state">
+          <p>finding a page...</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="error-state" class="error-state" style="display:none;">
+          <p id="error-message">Something went wrong.</p>
+          <button id="btn-retry" class="nav-btn">try again</button>
+        </div>
+
+        <!-- The book page -->
+        <div id="book-page" class="book-page" style="display:none;">
+          <div class="book-page-header">
+            <div id="book-title" class="book-title"></div>
+            <div id="book-chapter" class="book-chapter"></div>
+          </div>
+          <canvas id="blackout-canvas"></canvas>
+          <div class="book-page-footer">
+            <div id="book-author" class="book-author"></div>
+            <div id="page-number" class="page-number"></div>
+          </div>
+        </div>
+
+        <!-- Navigation between pages -->
+        <div id="page-nav" class="page-nav" style="display:none;">
+          <button id="btn-prev" class="page-nav-btn">← prev page</button>
+          <button id="btn-same-random" class="page-nav-btn">↻ random page from this book</button>
+          <button id="btn-next" class="page-nav-btn">next page →</button>
+        </div>
+
+      </div>
+
+      <!-- Redact-o-matic sidebar -->
+      <aside class="sidebar">
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Redact-o-matic</div>
+        </div>
+
+        <!-- Book info -->
+        <div class="sidebar-section" id="book-info" style="display:none;">
+          <div class="sidebar-label">source</div>
+          <div id="sidebar-book-title" class="sidebar-book-title"></div>
+          <div id="sidebar-book-author" class="sidebar-book-author"></div>
+        </div>
+
+        <!-- Brush size -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">brush size</div>
+          <div class="brush-row">
+            <button class="brush-btn" data-size="10" title="small">
+              <span class="brush-dot brush-sm"></span>
+            </button>
+            <button class="brush-btn active" data-size="16" title="medium">
+              <span class="brush-dot brush-md"></span>
+            </button>
+            <button class="brush-btn" data-size="24" title="large">
+              <span class="brush-dot brush-lg"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Page color -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">page color</div>
+          <div class="color-row">
+            <button class="color-btn active" data-color="#faf8f3" title="cream" style="background:#faf8f3;"></button>
+            <button class="color-btn" data-color="#ffffff" title="white" style="background:#ffffff;"></button>
+            <button class="color-btn" data-color="#f0e6d0" title="aged" style="background:#f0e6d0;"></button>
+            <button class="color-btn" data-color="#e8e4d0" title="newsprint" style="background:#e8e4d0;"></button>
+          </div>
+        </div>
+
+        <!-- Font -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">font</div>
+          <div class="font-row">
+            <button class="font-btn active" data-font="Lora">Lora</button>
+            <button class="font-btn" data-font="IM Fell English">Fell</button>
+            <button class="font-btn" data-font="Lexend">Lexend</button>
+          </div>
+        </div>
+
+        <!-- Undo -->
+        <div class="sidebar-section">
+          <button id="btn-undo" class="sidebar-action-btn">↩ undo last stroke</button>
+        </div>
+
+        <!-- Actions -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">when you're done</div>
+          <button id="btn-save-sidebar" class="sidebar-action-btn sidebar-action-primary">↓ save poem</button>
+          <button id="btn-share" class="sidebar-action-btn">↗ share</button>
+          <button id="btn-start-over" class="sidebar-action-btn">✕ start over</button>
+        </div>
+
+        <!-- Attribution -->
+        <div class="sidebar-section sidebar-attribution">
+          <p>Text from <a href="https://www.gutenberg.org" target="_blank">Project Gutenberg</a>, a volunteer effort to digitize and archive cultural works.</p>
+          <p><a href="https://www.gutenberg.org/donate/" target="_blank">Consider donating →</a></p>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="js/gutenberg.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
