@@ -38,7 +38,7 @@ BOOK_LISTS.all = Object.values(BOOK_LISTS).flat();
 
 async function fetchBookText(bookId) {
   // Get book metadata
-  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
+  const metaRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://gutendex.com/books?ids=${bookId}`)}`);
   const metaData = await metaRes.json();
   const book = metaData.results[0];
   if (!book) throw new Error('Book not found');
@@ -52,6 +52,7 @@ async function fetchBookText(bookId) {
   if (!textUrl) throw new Error('No plain text available');
 
   // Fetch the text
+  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
   const fullText = await textRes.text();
 
   return {
@@ -61,7 +62,6 @@ async function fetchBookText(bookId) {
     text: fullText
   };
 }
-
 function extractPage(fullText, charOffset, charsPerPage = 1800) {
   // Strip Gutenberg header/footer
   const startMarkers = ['*** START OF', '***START OF', 'START OF THE PROJECT'];
