@@ -1,103 +1,91 @@
-// Gutenberg API via Gutendex
-const GUTENDEX = 'https://api.allorigins.win/raw?url=https://gutendex.com/books';
+// ── LOCAL MANIFEST + TEXT LOADER ─────────────────────────────────────
+// Replaces the Gutendex API approach with local manifest.json + txt files.
+// Texts live in /texts/ alongside manifest.json.
 
-// Curated book IDs by era
-const BOOK_LISTS = {
-  victorian: [
-    1342,  // Pride and Prejudice - Austen
-    98,    // A Tale of Two Cities - Dickens
-    174,   // The Picture of Dorian Gray - Wilde
-    161,   // Sense and Sensibility - Austen
-    768,   // Wuthering Heights - Brontë
-    1400,  // Great Expectations - Dickens
-  ],
-  romantic: [
-    84,    // Frankenstein - Shelley
-    105,   // Persuasion - Austen
-    1260,  // Jane Eyre - Brontë
-    2160,  // The Scarlet Letter - Hawthorne
-  ],
-  american: [
-    76,    // Adventures of Huckleberry Finn - Twain
-    74,    // The Adventures of Tom Sawyer - Twain
-    514,   // Little Women - Alcott
-    2852,  // The Red Badge of Courage - Crane
-    160,   // The Awakening - Chopin
-  ],
-  modern: [
-    5200,  // Metamorphosis - Kafka
-    2701,  // Moby Dick - Melville
-    4300,  // Ulysses - Joyce
-    215,   // The Call of the Wild - London
-    1661,  // The Adventures of Sherlock Holmes - Doyle
-  ]
-};
+const TEXTS_PATH = 'texts/';
 
-// All books combined
-BOOK_LISTS.all = Object.values(BOOK_LISTS).flat();
+let _manifest = null;
 
-async function fetchBookText(bookId) {
-  // Get book metadata
-  const metaRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://gutendex.com/books?ids=${bookId}`)}`);
-  const metaData = await metaRes.json();
-  const book = metaData.results[0];
-  if (!book) throw new Error('Book not found');
+// Load and cache the manifest
+async function loadManifest() {
+  if (_manifest) return _manifest;
+  const res = await fetch(TEXTS_PATH + 'manifest.json');
+  if (!res.ok) throw new Error('Could not load manifest');
+  _manifest = await res.json();
+  return _manifest;
+}
 
-  // Find plain text format
-  const formats = book.formats;
-  const textUrl = formats['text/plain; charset=utf-8'] ||
-                  formats['text/plain; charset=us-ascii'] ||
-                  formats['text/plain'];
+// Return all books, optionally filtered by genres and/or centuries
+function filterBooks(manifest, selectedGenres = [], selectedCenturies = []) {
+  return manifest.filter(b => {
+    if (selectedGenres.length > 0 && !b.genres.some(g => selectedGenres.includes(g))) return false;
+    if (selectedCenturies.length > 0 && !selectedCenturies.includes(b.century)) return false;
+    return true;
+  });
+}
 
-  if (!textUrl) throw new Error('No plain text available');
+// Pick a random book from a filtered pool
+function getRandomBook(manifest, selectedGenres = [], selectedCenturies = []) {
+  const pool = filterBooks(manifest, selectedGenres, selectedCenturies);
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
-  // Fetch the text
-  const textRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(textUrl)}`);
-  const fullText = await textRes.text();
+// Fetch and return the full text of a book
+async function fetchBookText(book) {
+  const res = await fetch(TEXTS_PATH + book.file);
+  if (!res.ok) throw new Error(`Could not load ${book.file}`);
+  const fullText = await res.text();
 
   return {
     id: book.id,
     title: book.title,
-    author: book.authors[0]?.name || 'Unknown',
+    author: book.author,
+    year: book.year,
+    gutenberg_url: book.gutenberg_url,
+    wikipedia: book.wikipedia || null,
     text: fullText
   };
 }
-function extractPage(fullText, charOffset, charsPerPage = 1800) {
-  // Strip Gutenberg header/footer
+
+// Strip Project Gutenberg header and footer from text
+function stripGutenberg(text) {
   const startMarkers = ['*** START OF', '***START OF', 'START OF THE PROJECT'];
-  const endMarkers = ['*** END OF', '***END OF', 'END OF THE PROJECT'];
+  const endMarkers   = ['*** END OF',   '***END OF',   'END OF THE PROJECT'];
 
   let start = 0;
-  let end = fullText.length;
+  let end   = text.length;
 
   for (const marker of startMarkers) {
-    const idx = fullText.indexOf(marker);
+    const idx = text.indexOf(marker);
     if (idx !== -1) {
-      start = fullText.indexOf('\n', idx) + 1;
+      start = text.indexOf('\n', idx) + 1;
       break;
     }
   }
-
   for (const marker of endMarkers) {
-    const idx = fullText.indexOf(marker);
-    if (idx !== -1) {
-      end = idx;
-      break;
-    }
+    const idx = text.indexOf(marker);
+    if (idx !== -1) { end = idx; break; }
   }
 
-  const content = fullText.slice(start, end).trim();
+  return text.slice(start, end).trim();
+}
 
-  // Find a clean paragraph break near our offset
-  const targetOffset = Math.min(charOffset, content.length - charsPerPage);
-  const cleanStart = content.lastIndexOf('\n\n', targetOffset) + 2 || targetOffset;
+// Extract a passage of ~charsPerPage chars from the cleaned text
+// starting near charOffset, aligned to a paragraph break
+function extractPage(fullText, charOffset, charsPerPage = 1800) {
+  const content = stripGutenberg(fullText);
+
+  const targetOffset = Math.min(charOffset, Math.max(0, content.length - charsPerPage));
+  // Snap to nearest paragraph break
+  const paraBreak = content.lastIndexOf('\n\n', targetOffset);
+  const cleanStart = paraBreak > 0 ? paraBreak + 2 : targetOffset;
   const pageText = content.slice(cleanStart, cleanStart + charsPerPage);
 
-  // Try to find nearest chapter heading
+  // Try to find the nearest chapter heading before this point
   const chapterMatch = content.slice(0, cleanStart).match(/CHAPTER\s+[IVXLCDM\d]+[^\n]*/gi);
   const chapter = chapterMatch ? chapterMatch[chapterMatch.length - 1] : null;
 
-  // Estimate page number
   const pageNum = Math.floor(cleanStart / charsPerPage) + 1;
 
   return {
@@ -109,14 +97,21 @@ function extractPage(fullText, charOffset, charsPerPage = 1800) {
   };
 }
 
-function getRandomBook(era = 'all') {
-  const list = BOOK_LISTS[era] || BOOK_LISTS.all;
-  return list[Math.floor(Math.random() * list.length)];
+// Pick a random offset within the "safe" middle 80% of the text
+function getRandomOffset(totalChars) {
+  const safeStart = Math.floor(totalChars * 0.1);
+  const safeEnd   = Math.floor(totalChars * 0.9);
+  return safeStart + Math.floor(Math.random() * (safeEnd - safeStart));
 }
 
-function getRandomOffset(totalChars, charsPerPage = 1800) {
-  // Avoid first and last 10% (usually intro/outro material)
-  const safeStart = Math.floor(totalChars * 0.1);
-  const safeEnd = Math.floor(totalChars * 0.9);
-  return safeStart + Math.floor(Math.random() * (safeEnd - safeStart));
+// Return all unique genres from the manifest, sorted
+function allGenres(manifest) {
+  return [...new Set(manifest.flatMap(b => b.genres))].sort();
+}
+
+// Return all unique centuries from the manifest, in chronological order
+function allCenturies(manifest) {
+  const order = ['Ancient', '16th', '17th', '18th', '19th', '20th', '21st'];
+  return [...new Set(manifest.map(b => b.century))]
+    .sort((a, b) => order.indexOf(a) - order.indexOf(b));
 }

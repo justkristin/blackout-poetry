@@ -6,17 +6,133 @@
   <title>Blackout</title>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=IM+Fell+English:ital@0;1&family=Lexend&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── book search + filter additions ── */
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .book-search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+    .book-search-input {
+      width: 100%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-mid);
+      border-radius: 4px;
+      color: var(--text-light);
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      padding: 7px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .book-search-input::placeholder { color: var(--text-dim); }
+    .book-search-input:focus { border-color: #888; }
+    .autocomplete-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-panel-light);
+      border: 1px solid var(--border-mid);
+      border-top: none;
+      z-index: 200;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .autocomplete-list.open { display: block; }
+    .ac-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .ac-item:hover { background: var(--bg-dark); }
+    .ac-title {
+      display: block;
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    .ac-author {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-mid);
+      margin-top: 2px;
+    }
+    /* filter chips */
+    .filter-section {
+      margin-bottom: 8px;
+    }
+    .filter-section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 5px;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .filter-chip {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dark);
+      color: var(--text-mid);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-family: var(--font-ui);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: all 0.12s;
+    }
+    .filter-chip:hover { border-color: var(--border-mid); color: var(--text-light); }
+    .filter-chip.active { background: var(--bg-panel-light); border-color: #888; color: var(--text-light); }
+    .clear-filters {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font-ui);
+    }
+    .clear-filters:hover { color: var(--text-mid); }
+    /* sidebar links */
+    .sidebar-link {
+      display: inline-block;
+      font-size: 0.68rem;
+      color: var(--text-mid);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--border-mid);
+      margin-right: 10px;
+      letter-spacing: 0.04em;
+    }
+    .sidebar-link:hover { color: var(--text-light); border-bottom-color: #888; }
+    #sidebar-book-links { margin-top: 6px; }
+  </style>
 </head>
 <body>
 
   <header>
     <div class="header-inner">
       <div class="header-brand">
-        <span class="site-name">Blackout</span>
+        <span class="site-name">▓ Blackout</span>
         <span class="site-tagline">every page holds a poem</span>
       </div>
       <nav class="header-nav">
-        <button id="btn-new-random" class="nav-btn">↻ random page</button>
+        <button id="btn-new-random" class="nav-btn">↻ give me a page</button>
         <button id="btn-save" class="nav-btn nav-btn-primary">↓ save poem</button>
       </nav>
     </div>
@@ -28,24 +144,40 @@
       <!-- Book page / canvas area -->
       <div class="page-area">
 
-        <!-- Era/genre filters -->
-        <div class="filter-bar">
-          <button class="filter-btn active" data-filter="all">all eras</button>
-          <button class="filter-btn" data-filter="victorian">victorian</button>
-          <button class="filter-btn" data-filter="romantic">romantic</button>
-          <button class="filter-btn" data-filter="american">american</button>
-          <button class="filter-btn" data-filter="modern">modern</button>
+        <!-- Book search -->
+        <div class="search-bar">
+          <div class="book-search-wrap">
+            <input type="text" id="book-search" class="book-search-input"
+              placeholder="Search for a title or author…"
+              autocomplete="off">
+            <div id="autocomplete-list" class="autocomplete-list"></div>
+          </div>
+          <button id="btn-new-random-sm" class="nav-btn" style="white-space:nowrap">↻ give me a page</button>
+        </div>
+
+        <!-- Genre filter chips -->
+        <div class="filter-section">
+          <div class="filter-section-label">Genre</div>
+          <div class="chip-row" id="genre-chips"></div>
+        </div>
+
+        <!-- Century filter chips -->
+        <div class="filter-section">
+          <div class="filter-section-label">Century</div>
+          <div class="chip-row" id="century-chips">
+            <button class="clear-filters" id="clear-filters" style="display:none">Clear filters</button>
+          </div>
         </div>
 
         <!-- Loading state -->
         <div id="loading-state" class="loading-state">
-          <p>finding a page...</p>
+          <p>finding a page…</p>
         </div>
 
         <!-- Error state -->
         <div id="error-state" class="error-state" style="display:none;">
           <p id="error-message">Something went wrong.</p>
-          <button id="btn-retry" class="nav-btn">try again</button>
+          <button id="btn-retry" class="nav-btn" style="margin-top:12px">try again</button>
         </div>
 
         <!-- The book page -->
@@ -82,6 +214,7 @@
           <div class="sidebar-label">source</div>
           <div id="sidebar-book-title" class="sidebar-book-title"></div>
           <div id="sidebar-book-author" class="sidebar-book-author"></div>
+          <div id="sidebar-book-links"></div>
         </div>
 
         <!-- Brush size -->
