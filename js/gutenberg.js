@@ -77,10 +77,21 @@ function extractPage(fullText, charOffset, charsPerPage = 1800) {
   const content = stripGutenberg(fullText);
 
   const targetOffset = Math.min(charOffset, Math.max(0, content.length - charsPerPage));
-  // Snap to nearest paragraph break
+  
+  // Snap START to nearest paragraph break, or word boundary
   const paraBreak = content.lastIndexOf('\n\n', targetOffset);
-  const cleanStart = paraBreak > 0 ? paraBreak + 2 : targetOffset;
-  const pageText = content.slice(cleanStart, cleanStart + charsPerPage);
+  const cleanStart = paraBreak > 0 
+    ? paraBreak + 2 
+    : (content.indexOf(' ', targetOffset) + 1 || targetOffset);
+
+  // Snap END to nearest word boundary
+  let pageEnd = cleanStart + charsPerPage;
+  if (pageEnd < content.length) {
+    const lastSpace = content.lastIndexOf(' ', pageEnd);
+    if (lastSpace > cleanStart) pageEnd = lastSpace;
+  }
+
+  const pageText = content.slice(cleanStart, pageEnd);
 
   // Try to find the nearest chapter heading before this point
   const chapterMatch = content.slice(0, cleanStart).match(/CHAPTER\s+[IVXLCDM\d]+[^\n]*/gi);
