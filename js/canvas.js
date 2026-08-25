@@ -11,7 +11,7 @@ class BlackoutCanvas {
     this.fontSize = 15;
     this.lineHeight = 1.8;
     this.text = '';
-
+    document.getElementById('book-page').style.background = this.pageColor;
     this.bindEvents();
   }
 
@@ -22,6 +22,7 @@ class BlackoutCanvas {
 
   setPageColor(color) {
     this.pageColor = color;
+    document.getElementById('book-page').style.background = color;
     this.render();
   }
 
