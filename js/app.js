@@ -55,8 +55,11 @@
   if (saved && saved.text) {
     showPage();
     blackoutCanvas.setText(saved.text, canvasWidth());
-    blackoutCanvas.setText(currentPage.text, canvasWidth());
     blackoutCanvas.render();
+    // Lock fonts if restored session has strokes
+    if (blackoutCanvas.strokes.length > 0) {
+      document.querySelectorAll('.font-btn').forEach(b => b.classList.add('locked'));
+    }
   } else {
     await loadRandomPage();
   }
@@ -227,7 +230,6 @@
 
     showPage();
     blackoutCanvas.strokes = [];
-    blackoutCanvas.setText(saved.text, canvasWidth());
     blackoutCanvas.setText(currentPage.text, canvasWidth());
   }
 
