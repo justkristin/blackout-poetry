@@ -1,0 +1,939 @@
+[
+  {
+    "id": "86",
+    "file": "pg86.txt",
+    "title": "A Connecticut Yankee in King Arthur's Court",
+    "author": "Mark Twain",
+    "year": 1889,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Comedy & Satire",
+      "Science Fiction"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/A_Connecticut_Yankee_in_King_Arthur%27s_Court",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/86"
+  },
+  {
+    "id": "1514",
+    "file": "pg1514.txt",
+    "title": "A Midsummer Night's Dream",
+    "author": "William Shakespeare",
+    "year": 1600,
+    "century": "17th",
+    "genres": [
+      "Comedy & Satire",
+      "Drama",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/A_Midsummer_Night%27s_Dream",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1514"
+  },
+  {
+    "id": "2641",
+    "file": "pg2641.txt",
+    "title": "A Room with a View",
+    "author": "E. M. Forster",
+    "year": 1908,
+    "century": "20th",
+    "genres": [
+      "Political Science",
+      "Romance"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/A_Room_with_a_View",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2641"
+  },
+  {
+    "id": "11339",
+    "file": "pg11339.txt",
+    "title": "Aesop's Fables",
+    "author": "Aesop",
+    "year": -600,
+    "century": "Ancient",
+    "genres": [
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Aesop%27s_Fables",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/11339"
+  },
+  {
+    "id": "11",
+    "file": "pg11.txt",
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "year": 1865,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alice%27s_Adventures_in_Wonderland",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/11"
+  },
+  {
+    "id": "2162",
+    "file": "pg2162.txt",
+    "title": "Anarchism and Other Essays",
+    "author": "Emma Goldman",
+    "year": 1910,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Political Science"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Anarchism_and_Other_Essays",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2162"
+  },
+  {
+    "id": "103",
+    "file": "pg103.txt",
+    "title": "Around the World in Eighty Days",
+    "author": "Jules Verne",
+    "year": 1872,
+    "century": "19th",
+    "genres": [
+      "Adventure"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Around_the_World_in_Eighty_Days",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/103"
+  },
+  {
+    "id": "65974",
+    "file": "pg65974.txt",
+    "title": "Carry On, Jeeves",
+    "author": "P. G. Wodehouse",
+    "year": 1925,
+    "century": "20th",
+    "genres": [
+      "Comedy & Satire"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Carry_On,_Jeeves",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/65974"
+  },
+  {
+    "id": "5131",
+    "file": "pg5131.txt",
+    "title": "Childe Harold's Pilgrimage",
+    "author": "Lord Byron",
+    "year": 1818,
+    "century": "19th",
+    "genres": [
+      "Poetry"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Childe_Harold%27s_Pilgrimage",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/5131"
+  },
+  {
+    "id": "147",
+    "file": "pg147.txt",
+    "title": "Common Sense",
+    "author": "Thomas Paine",
+    "year": 1776,
+    "century": "18th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Common_Sense_(pamphlet)",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/147"
+  },
+  {
+    "id": "15210",
+    "file": "pg15210.txt",
+    "title": "Darkwater: Voices from Within the Veil",
+    "author": "W. E. B. Du Bois",
+    "year": 1920,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Darkwater",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/15210"
+  },
+  {
+    "id": "921",
+    "file": "pg921.txt",
+    "title": "De Profundis",
+    "author": "Oscar Wilde",
+    "year": 1905,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/De_Profundis_(Wilde)",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/921"
+  },
+  {
+    "id": "345",
+    "file": "pg345.txt",
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "year": 1897,
+    "century": "19th",
+    "genres": [
+      "Gothic & Horror"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Dracula",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/345"
+  },
+  {
+    "id": "2944",
+    "file": "pg2944.txt",
+    "title": "Essays \u2014 First Series",
+    "author": "Ralph Waldo Emerson",
+    "year": 1841,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Essays:_First_Series",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2944"
+  },
+  {
+    "id": "69088",
+    "file": "pg69088.txt",
+    "title": "Fabian Essays in Socialism",
+    "author": "Bernard Shaw et al.",
+    "year": 1889,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy",
+      "Political Science"
+    ],
+    "author_gender": "various",
+    "wikipedia": "https://en.wikipedia.org/wiki/Fabian_Essays_in_Socialism",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/69088"
+  },
+  {
+    "id": "84",
+    "file": "pg84.txt",
+    "title": "Frankenstein; or, The Modern Prometheus",
+    "author": "Mary Wollstonecraft Shelley",
+    "year": 1818,
+    "century": "19th",
+    "genres": [
+      "Gothic & Horror",
+      "Science Fiction"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Frankenstein",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/84"
+  },
+  {
+    "id": "8486",
+    "file": "pg8486.txt",
+    "title": "Ghost Stories of an Antiquary",
+    "author": "M. R. James",
+    "year": 1904,
+    "century": "20th",
+    "genres": [
+      "Gothic & Horror"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ghost_Stories_of_an_Antiquary",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/8486"
+  },
+  {
+    "id": "2591",
+    "file": "pg2591.txt",
+    "title": "Grimms' Fairy Tales",
+    "author": "Jacob Grimm and Wilhelm Grimm",
+    "year": 1812,
+    "century": "19th",
+    "genres": [
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Grimms%27_Fairy_Tales",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2591"
+  },
+  {
+    "id": "17157",
+    "file": "pg17157.txt",
+    "title": "Gulliver's Travels",
+    "author": "Jonathan Swift",
+    "year": 1726,
+    "century": "18th",
+    "genres": [
+      "Adventure",
+      "Comedy & Satire",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gulliver%27s_Travels",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/17157"
+  },
+  {
+    "id": "30201",
+    "file": "pg30201.txt",
+    "title": "In Praise of Folly",
+    "author": "Desiderius Erasmus",
+    "year": 1511,
+    "century": "16th",
+    "genres": [
+      "Comedy & Satire",
+      "Essay & Philosophy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Praise_of_Folly",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/30201"
+  },
+  {
+    "id": "1322",
+    "file": "pg1322.txt",
+    "title": "Leaves of Grass",
+    "author": "Walt Whitman",
+    "year": 1855,
+    "century": "19th",
+    "genres": [
+      "Poetry"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Leaves_of_Grass",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1322"
+  },
+  {
+    "id": "37106",
+    "file": "pg37106.txt",
+    "title": "Little Women",
+    "author": "Louisa May Alcott",
+    "year": 1868,
+    "century": "19th",
+    "genres": [
+      "Children's Literature & Folklore",
+      "Romance"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Little_Women",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/37106"
+  },
+  {
+    "id": "24518",
+    "file": "pg24518.txt",
+    "title": "Memoirs of Extraordinary Popular Delusions and the Madness of Crowds",
+    "author": "Charles Mackay",
+    "year": 1841,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Extraordinary_Popular_Delusions_and_the_Madness_of_Crowds",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/24518"
+  },
+  {
+    "id": "2701",
+    "file": "pg2701.txt",
+    "title": "Moby Dick; Or, The Whale",
+    "author": "Herman Melville",
+    "year": 1851,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Moby-Dick",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2701"
+  },
+  {
+    "id": "2739",
+    "file": "pg2739.txt",
+    "title": "More Letters of Charles Darwin, Volume 1",
+    "author": "Charles Darwin",
+    "year": 1903,
+    "century": "20th",
+    "genres": [
+      "Personal Writing",
+      "Reference"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Charles_Darwin",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2739"
+  },
+  {
+    "id": "16",
+    "file": "pg16.txt",
+    "title": "Peter Pan",
+    "author": "J. M. Barrie",
+    "year": 1911,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Peter_and_Wendy",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/16"
+  },
+  {
+    "id": "61262",
+    "file": "pg61262.txt",
+    "title": "Poirot Investigates",
+    "author": "Agatha Christie",
+    "year": 1924,
+    "century": "20th",
+    "genres": [
+      "Mystery & Detective"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Poirot_Investigates",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/61262"
+  },
+  {
+    "id": "1342",
+    "file": "pg1342.txt",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "year": 1813,
+    "century": "19th",
+    "genres": [
+      "Political Science",
+      "Romance"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pride_and_Prejudice",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1342"
+  },
+  {
+    "id": "17090",
+    "file": "pg17090.txt",
+    "title": "Random Reminiscences of Men and Events",
+    "author": "John D. Rockefeller",
+    "year": 1909,
+    "century": "20th",
+    "genres": [
+      "Personal Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": null,
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/17090"
+  },
+  {
+    "id": "1041",
+    "file": "pg1041.txt",
+    "title": "Shakespeare's Sonnets",
+    "author": "William Shakespeare",
+    "year": 1609,
+    "century": "17th",
+    "genres": [
+      "Poetry"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Shakespeare%27s_sonnets",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1041"
+  },
+  {
+    "id": "78",
+    "file": "pg78.txt",
+    "title": "Tarzan of the Apes",
+    "author": "Edgar Rice Burroughs",
+    "year": 1912,
+    "century": "20th",
+    "genres": [
+      "Adventure"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Tarzan_of_the_Apes",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/78"
+  },
+  {
+    "id": "59899",
+    "file": "pg59899.txt",
+    "title": "Ten Days in a Mad-House",
+    "author": "Nellie Bly",
+    "year": 1887,
+    "century": "19th",
+    "genres": [
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ten_Days_in_a_Mad-House",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/59899"
+  },
+  {
+    "id": "1661",
+    "file": "pg1661.txt",
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "year": 1892,
+    "century": "19th",
+    "genres": [
+      "Mystery & Detective"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Adventures_of_Sherlock_Holmes",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1661"
+  },
+  {
+    "id": "74",
+    "file": "pg74.txt",
+    "title": "The Adventures of Tom Sawyer",
+    "author": "Mark Twain",
+    "year": 1876,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Adventures_of_Tom_Sawyer",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/74"
+  },
+  {
+    "id": "393",
+    "file": "pg393.txt",
+    "title": "The Blue Lagoon",
+    "author": "H. De Vere Stacpoole",
+    "year": 1908,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Romance"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Blue_Lagoon_(novel)",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/393"
+  },
+  {
+    "id": "10136",
+    "file": "pg10136.txt",
+    "title": "The Book of Household Management",
+    "author": "Isabella Beeton",
+    "year": 1861,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy",
+      "Reference"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Mrs_Beeton%27s_Book_of_Household_Management",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/10136"
+  },
+  {
+    "id": "215",
+    "file": "pg215.txt",
+    "title": "The Call of the Wild",
+    "author": "Jack London",
+    "year": 1903,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Nature Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Call_of_the_Wild",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/215"
+  },
+  {
+    "id": "61",
+    "file": "pg61.txt",
+    "title": "The Communist Manifesto",
+    "author": "Karl Marx and Friedrich Engels",
+    "year": 1848,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Communist_Manifesto",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/61"
+  },
+  {
+    "id": "1184",
+    "file": "pg1184.txt",
+    "title": "The Count of Monte Cristo",
+    "author": "Alexandre Dumas",
+    "year": 1844,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Romance"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Count_of_Monte_Cristo",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1184"
+  },
+  {
+    "id": "37134",
+    "file": "pg37134.txt",
+    "title": "The Elements of Style",
+    "author": "William Strunk",
+    "year": 1918,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Reference"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Elements_of_Style",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/37134"
+  },
+  {
+    "id": "1404",
+    "file": "pg1404.txt",
+    "title": "The Federalist Papers",
+    "author": "Alexander Hamilton, John Jay, James Madison",
+    "year": 1788,
+    "century": "18th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Federalist_Papers",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1404"
+  },
+  {
+    "id": "2852",
+    "file": "pg2852.txt",
+    "title": "The Hound of the Baskervilles",
+    "author": "Arthur Conan Doyle",
+    "year": 1902,
+    "century": "20th",
+    "genres": [
+      "Gothic & Horror",
+      "Mystery & Detective"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Hound_of_the_Baskervilles",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2852"
+  },
+  {
+    "id": "6130",
+    "file": "pg6130.txt",
+    "title": "The Iliad",
+    "author": "Homer",
+    "year": -800,
+    "century": "Ancient",
+    "genres": [
+      "Fantasy",
+      "Poetry"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Iliad",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/6130"
+  },
+  {
+    "id": "236",
+    "file": "pg236.txt",
+    "title": "The Jungle Book",
+    "author": "Rudyard Kipling",
+    "year": 1894,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Jungle_Book",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/236"
+  },
+  {
+    "id": "1695",
+    "file": "pg1695.txt",
+    "title": "The Man Who Was Thursday",
+    "author": "G. K. Chesterton",
+    "year": 1908,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Fantasy",
+      "Mystery & Detective"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Man_Who_Was_Thursday",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1695"
+  },
+  {
+    "id": "10148",
+    "file": "pg10148.txt",
+    "title": "The Merry Adventures of Robin Hood",
+    "author": "Howard Pyle",
+    "year": 1883,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Merry_Adventures_of_Robin_Hood",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/10148"
+  },
+  {
+    "id": "863",
+    "file": "pg863.txt",
+    "title": "The Mysterious Affair at Styles",
+    "author": "Agatha Christie",
+    "year": 1920,
+    "century": "20th",
+    "genres": [
+      "Mystery & Detective"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Mysterious_Affair_at_Styles",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/863"
+  },
+  {
+    "id": "18467",
+    "file": "pg18467.txt",
+    "title": "The People's Common Sense Medical Adviser",
+    "author": "Ray Vaughn Pierce",
+    "year": 1875,
+    "century": "19th",
+    "genres": [
+      "Reference"
+    ],
+    "author_gender": "male",
+    "wikipedia": null,
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/18467"
+  },
+  {
+    "id": "1232",
+    "file": "pg1232.txt",
+    "title": "The Prince",
+    "author": "Niccol\u00f2 Machiavelli",
+    "year": 1532,
+    "century": "16th",
+    "genres": [
+      "Essay & Philosophy",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Prince",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1232"
+  },
+  {
+    "id": "58585",
+    "file": "pg58585.txt",
+    "title": "The Prophet",
+    "author": "Kahlil Gibran",
+    "year": 1923,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Poetry"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Prophet_(book)",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/58585"
+  },
+  {
+    "id": "1874",
+    "file": "pg1874.txt",
+    "title": "The Railway Children",
+    "author": "E. Nesbit",
+    "year": 1906,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Railway_Children",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1874"
+  },
+  {
+    "id": "113",
+    "file": "pg113.txt",
+    "title": "The Secret Garden",
+    "author": "Frances Hodgson Burnett",
+    "year": 1911,
+    "century": "20th",
+    "genres": [
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Secret_Garden",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/113"
+  },
+  {
+    "id": "40284",
+    "file": "pg40284.txt",
+    "title": "The Sex Life of the Gods",
+    "author": "M. E. Knerr",
+    "year": 1952,
+    "century": "20th",
+    "genres": [
+      "Science Fiction"
+    ],
+    "author_gender": "male",
+    "wikipedia": null,
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/40284"
+  },
+  {
+    "id": "408",
+    "file": "pg408.txt",
+    "title": "The Souls of Black Folk",
+    "author": "W. E. B. Du Bois",
+    "year": 1903,
+    "century": "20th",
+    "genres": [
+      "Essay & Philosophy",
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Souls_of_Black_Folk",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/408"
+  },
+  {
+    "id": "1257",
+    "file": "pg1257.txt",
+    "title": "The Three Musketeers",
+    "author": "Alexandre Dumas",
+    "year": 1844,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Historical Fiction"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Three_Musketeers",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/1257"
+  },
+  {
+    "id": "66417",
+    "file": "pg66417.txt",
+    "title": "The Whole Truth and Nothing But",
+    "author": "Hedda Hopper",
+    "year": 1963,
+    "century": "20th",
+    "genres": [
+      "Personal Writing"
+    ],
+    "author_gender": "female",
+    "wikipedia": "https://en.wikipedia.org/wiki/Hedda_Hopper",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/66417"
+  },
+  {
+    "id": "55",
+    "file": "pg55.txt",
+    "title": "The Wonderful Wizard of Oz",
+    "author": "L. Frank Baum",
+    "year": 1900,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore",
+      "Fantasy"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/The_Wonderful_Wizard_of_Oz",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/55"
+  },
+  {
+    "id": "2147",
+    "file": "pg2147.txt",
+    "title": "The Works of Edgar Allan Poe, Volume 1",
+    "author": "Edgar Allan Poe",
+    "year": 1843,
+    "century": "19th",
+    "genres": [
+      "Gothic & Horror"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Edgar_Allan_Poe_bibliography",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/2147"
+  },
+  {
+    "id": "120",
+    "file": "pg120.txt",
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "year": 1883,
+    "century": "19th",
+    "genres": [
+      "Adventure",
+      "Children's Literature & Folklore"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Treasure_Island",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/120"
+  },
+  {
+    "id": "45631",
+    "file": "pg45631.txt",
+    "title": "Twelve Years a Slave",
+    "author": "Solomon Northup",
+    "year": 1853,
+    "century": "19th",
+    "genres": [
+      "Personal Writing",
+      "Political Science"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Twelve_Years_a_Slave",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/45631"
+  },
+  {
+    "id": "205",
+    "file": "pg205.txt",
+    "title": "Walden, and On The Duty Of Civil Disobedience",
+    "author": "Henry David Thoreau",
+    "year": 1854,
+    "century": "19th",
+    "genres": [
+      "Essay & Philosophy",
+      "Nature Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/Walden",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/205"
+  },
+  {
+    "id": "68957",
+    "file": "pg68957.txt",
+    "title": "Weird Tales, Volume 1, Number 1",
+    "author": "Various",
+    "year": 1923,
+    "century": "20th",
+    "genres": [
+      "Fantasy",
+      "Gothic & Horror"
+    ],
+    "author_gender": "various",
+    "wikipedia": "https://en.wikipedia.org/wiki/Weird_Tales",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/68957"
+  },
+  {
+    "id": "910",
+    "file": "pg910.txt",
+    "title": "White Fang",
+    "author": "Jack London",
+    "year": 1906,
+    "century": "20th",
+    "genres": [
+      "Adventure",
+      "Nature Writing"
+    ],
+    "author_gender": "male",
+    "wikipedia": "https://en.wikipedia.org/wiki/White_Fang",
+    "gutenberg_url": "https://www.gutenberg.org/ebooks/910"
+  }
+]
