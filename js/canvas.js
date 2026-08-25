@@ -8,7 +8,7 @@ class BlackoutCanvas {
     this.currentStroke = [];
     this.pageColor = '#faf8f3';
     this.font = 'Lora';
-    this.fontSize = 15;
+    this.fontSize = 13;
     this.lineHeight = 1.8;
     this.text = '';
     document.getElementById('book-page').style.background = this.pageColor;
@@ -17,6 +17,14 @@ class BlackoutCanvas {
 
   setFont(font) {
     this.font = font;
+    // Each font has different metrics — adjust size accordingly
+    const fontSizes = {
+      'Lora': 13,
+      'IM Fell English': 15,
+      'Lexend': 12
+    };
+    this.fontSize = fontSizes[font] || 13;
+    this.layoutText();
     this.render();
   }
 
