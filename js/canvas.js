@@ -47,32 +47,70 @@ class BlackoutCanvas {
 
   layoutText() {
     const ctx = this.ctx;
-    const fontString = `${this.fontSize}px '${this.font}', Georgia, serif`;
-    ctx.font = fontString;
-
-    const words = this.text.split(/\s+/).filter(w => w.length > 0);
+    ctx.font = `${this.fontSize}px '${this.font}', Georgia, serif`;
     const maxWidth = this.canvas.width - 40;
     const lineH = this.fontSize * this.lineHeight;
-
-    let lines = [];
-    let currentLine = '';
-
-    for (const word of words) {
-      const test = currentLine ? `${currentLine} ${word}` : word;
-      if (ctx.measureText(test).width > maxWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = test;
+    const blankLineH = lineH * 0.6; // blank lines are slightly smaller gap
+  
+    // Split text into paragraphs/stanzas on double newlines
+    const blocks = this.text.split(/\n\n+/);
+    
+    let lines = []; // each entry: { text, isBlank, indent }
+  
+    for (const block of blocks) {
+      // Add blank line between blocks
+      if (lines.length > 0) {
+        lines.push({ text: '', isBlank: true });
+      }
+  
+      // Split block into individual lines
+      const blockLines = block.split('\n');
+  
+      for (const rawLine of blockLines) {
+        const trimmed = rawLine.trimEnd();
+        if (!trimmed) {
+          lines.push({ text: '', isBlank: true });
+          continue;
+        }
+  
+        // Detect leading whitespace for indent
+        const leadingSpaces = rawLine.match(/^(\s*)/)[1].length;
+        const indent = leadingSpaces > 0 ? ctx.measureText('\u00a0').width * leadingSpaces * 0.5 : 0;
+  
+        // Detect if line is short enough to be a poetic line (don't wrap)
+        const lineWidth = ctx.measureText(trimmed).width;
+        if (lineWidth <= maxWidth - indent) {
+          // Fits on one line — keep as-is (poetic line)
+          lines.push({ text: trimmed, isBlank: false, indent, center: false });
+        } else {
+          // Too long — word wrap it (prose)
+          const words = trimmed.split(/\s+/);
+          let current = '';
+          for (const word of words) {
+            const test = current ? `${current} ${word}` : word;
+            if (ctx.measureText(test).width > maxWidth - indent && current) {
+              lines.push({ text: current, isBlank: false, indent, center: false });
+              current = word;
+            } else {
+              current = test;
+            }
+          }
+          if (current) lines.push({ text: current, isBlank: false, indent, center: false });
+        }
       }
     }
-    if (currentLine) lines.push(currentLine);
-
+  
     this.lines = lines;
-    this.canvas.height = Math.max(300, lines.length * lineH + 40);
     this.lineH = lineH;
+    this.blankLineH = blankLineH;
+  
+    // Calculate total canvas height
+    let totalH = 40;
+    for (const line of lines) {
+      totalH += line.isBlank ? blankLineH : lineH;
+    }
+    this.canvas.height = Math.max(300, totalH);
   }
-
   render() {
     const ctx = this.ctx;
     const w = this.canvas.width;
@@ -88,9 +126,13 @@ class BlackoutCanvas {
     ctx.textBaseline = 'top';
 
     const padding = 20;
-    this.lines.forEach((line, i) => {
-      ctx.fillText(line, padding, padding + i * this.lineH);
-    });
+    let y = padding;
+    for (const line of this.lines) {
+      if (!line.isBlank) {
+        ctx.fillText(line.text, padding + (line.indent || 0), y);
+      }
+      y += line.isBlank ? this.blankLineH : this.lineH;
+    }
 
     // Redraw all strokes
     ctx.fillStyle = '#1a1a1a';
