@@ -1,0 +1,23 @@
+[
+  {
+    "id": "frankenstein",
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "year": 1818,
+    "era": "Romantic",
+    "genre": ["Gothic", "Science Fiction"],
+    "file": "frankenstein.txt",
+    "gutenberg_id": 84
+  }
+  {
+    "id": "",
+    "title": "",
+    "author": "",
+    "year": ,
+    "era": "",
+    "genre": ["", ""],
+    "file": "",
+    "gutenberg_id": 
+  }
+]
+
