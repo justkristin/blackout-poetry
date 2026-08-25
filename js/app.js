@@ -31,6 +31,14 @@
   const bookInputEl      = document.getElementById('book-search');
   const autocompleteEl   = document.getElementById('autocomplete-list');
 
+  // ── CANVAS WIDTH HELPER ── add it right here ──────────────────────
+  function canvasWidth() {
+    const style = getComputedStyle(bookPageEl);
+    return bookPageEl.clientWidth 
+      - parseFloat(style.paddingLeft) 
+      - parseFloat(style.paddingRight);
+  }
+
   // ── INIT ───────────────────────────────────────────────────────────
   blackoutCanvas = new BlackoutCanvas(canvasEl);
 
@@ -46,7 +54,8 @@
   const saved = blackoutCanvas.loadState();
   if (saved && saved.text) {
     showPage();
-    blackoutCanvas.setText(saved.text, bookPageEl.clientWidth - 80);
+    blackoutCanvas.setText(saved.text, canvasWidth());
+    blackoutCanvas.setText(currentPage.text, canvasWidth());
     blackoutCanvas.render();
   } else {
     await loadRandomPage();
@@ -218,7 +227,8 @@
 
     showPage();
     blackoutCanvas.strokes = [];
-    blackoutCanvas.setText(currentPage.text, bookPageEl.clientWidth - 80);
+    blackoutCanvas.setText(saved.text, canvasWidth());
+    blackoutCanvas.setText(currentPage.text, canvasWidth());
   }
 
   // ── NAVIGATION ─────────────────────────────────────────────────────
@@ -273,6 +283,7 @@
 
   document.querySelectorAll('.font-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (blackoutCanvas.strokes.length > 0) return; // locked after first stroke
       document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       blackoutCanvas.setFont(btn.dataset.font);

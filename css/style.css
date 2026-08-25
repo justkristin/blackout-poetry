@@ -104,9 +104,9 @@ main {
 
 .app-layout {
   display: grid;
-  grid-template-columns: 1fr 220px;
-  gap: 1.25rem;
-  max-width: 1200px;
+  grid-template-columns: 1fr minmax(180px, 220px);
+  gap: 1rem;
+  max-width: 1400px;
   margin: 0 auto;
   align-items: start;
 }
@@ -159,7 +159,7 @@ main {
 .book-page {
   background: var(--cream);
   border-radius: 2px;
-  padding: 2rem 2.5rem 1.5rem;
+  padding: 1.5rem 2rem;
   position: relative;
   box-shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
@@ -418,4 +418,9 @@ main {
 
 .sidebar-attribution p {
   margin-bottom: 0.4rem;
+}
+
+.font-btn.locked {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

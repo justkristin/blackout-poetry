@@ -146,6 +146,8 @@ class BlackoutCanvas {
         this.strokes.push([...this.currentStroke]);
         this.currentStroke = [];
         this.saveState();
+        // Lock fonts after first stroke
+        document.querySelectorAll('.font-btn').forEach(b => b.classList.add('locked'));
       }
     };
 
@@ -163,6 +165,10 @@ class BlackoutCanvas {
       this.strokes.pop();
       this.render();
       this.saveState();
+      // Unlock fonts if no strokes remain
+      if (this.strokes.length === 0) {
+        document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('locked'));
+      }
     }
   }
 
