@@ -103,12 +103,22 @@ main {
 }
 
 .app-layout {
-  display: grid;
-  grid-template-columns: 1fr minmax(180px, 220px);
+  display: flex;
+  justify-content: center;
+  align-items: start;
   gap: 1rem;
   max-width: 1400px;
   margin: 0 auto;
-  align-items: start;
+}
+
+.page-area {
+  flex: 0 1 640px;
+  min-width: 280px;
+}
+
+.sidebar {
+  flex: 0 1 220px;
+  min-width: 180px;
 }
 
 /* ── FILTER BAR ──────────────────────────── */
