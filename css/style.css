@@ -329,6 +329,12 @@ main {
   display: block;
 }
 
+.brush-pen {
+  width: 2px;
+  height: 18px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
 .brush-sm { width: 6px; height: 6px; }
 .brush-md { width: 10px; height: 10px; }
 .brush-lg { width: 16px; height: 16px; }
