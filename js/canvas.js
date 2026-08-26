@@ -5,7 +5,10 @@ class BlackoutCanvas {
     this.painting = false;
     this.brushSize = 16;
     this.strokes = []; // for undo
+    this.highlights = []; // highlighter marks, drawn under text
     this.currentStroke = [];
+    this.mode = 'ink'; // 'ink' (blackout) | 'highlight'
+    this.highlightColor = '#fff176';
     this.pageColor = '#faf8f3';
     this.font = 'Lora';
     this.fontSize = 13;
@@ -36,6 +39,20 @@ class BlackoutCanvas {
 
   setBrushSize(size) {
     this.brushSize = size;
+  }
+
+  setMode(mode) {
+    this.mode = mode;
+  }
+
+  setHighlightColor(color) {
+    this.highlightColor = color;
+  }
+
+  clearHighlights() {
+    this.highlights = [];
+    this.render();
+    this.saveState();
   }
 
   setText(text, width) {
@@ -120,6 +137,14 @@ class BlackoutCanvas {
     ctx.fillStyle = this.pageColor;
     ctx.fillRect(0, 0, w, h);
 
+    // Highlights (translucent, drawn under the text like a real marker)
+    for (const hl of this.highlights) {
+      this.drawColoredStroke(hl.points, hl.color);
+    }
+    if (this.mode === 'highlight' && this.currentStroke.length) {
+      this.drawColoredStroke(this.currentStroke, this.highlightColor);
+    }
+
     // Text
     ctx.fillStyle = '#2a2a2a';
     ctx.font = `${this.fontSize}px '${this.font}', Georgia, serif`;
@@ -134,12 +159,12 @@ class BlackoutCanvas {
       y += line.isBlank ? this.blankLineH : this.lineH;
     }
 
-    // Redraw all strokes
+    // Redraw all ink (blackout) strokes, on top of the text
     ctx.fillStyle = '#1a1a1a';
     for (const stroke of this.strokes) {
       this.drawStroke(stroke);
     }
-    if (this.currentStroke.length) {
+    if (this.mode === 'ink' && this.currentStroke.length) {
       this.drawStroke(this.currentStroke);
     }
   }
@@ -156,6 +181,23 @@ class BlackoutCanvas {
         pt.size
       );
     }
+  }
+
+  drawColoredStroke(points, color, alpha = 0.45) {
+    if (!points.length) return;
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    for (const pt of points) {
+      ctx.fillRect(
+        pt.x - pt.size / 2,
+        pt.y - pt.size / 2,
+        pt.size,
+        pt.size
+      );
+    }
+    ctx.restore();
   }
 
   getPos(e) {
@@ -193,11 +235,15 @@ class BlackoutCanvas {
       if (!this.painting) return;
       this.painting = false;
       if (this.currentStroke.length) {
-        this.strokes.push([...this.currentStroke]);
+        if (this.mode === 'highlight') {
+          this.highlights.push({ points: [...this.currentStroke], color: this.highlightColor });
+        } else {
+          this.strokes.push([...this.currentStroke]);
+          // Lock fonts after first ink stroke (highlights don't lock — they're non-destructive)
+          document.querySelectorAll('.font-btn').forEach(b => b.classList.add('locked'));
+        }
         this.currentStroke = [];
         this.saveState();
-        // Lock fonts after first stroke
-        document.querySelectorAll('.font-btn').forEach(b => b.classList.add('locked'));
       }
     };
 
@@ -226,10 +272,12 @@ class BlackoutCanvas {
     try {
       const state = {
         strokes: this.strokes,
+        highlights: this.highlights,
         text: this.text,
         font: this.font,
         pageColor: this.pageColor,
-        brushSize: this.brushSize
+        brushSize: this.brushSize,
+        highlightColor: this.highlightColor
       };
       localStorage.setItem('blackout_state', JSON.stringify(state));
     } catch(e) {
@@ -243,9 +291,11 @@ class BlackoutCanvas {
       if (!saved) return false;
       const state = JSON.parse(saved);
       this.strokes = state.strokes || [];
+      this.highlights = state.highlights || [];
       this.font = state.font || 'Lora';
       this.pageColor = state.pageColor || '#faf8f3';
       this.brushSize = state.brushSize || 16;
+      this.highlightColor = state.highlightColor || '#fff176';
       return state;
     } catch(e) {
       return false;

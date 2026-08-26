@@ -359,6 +359,47 @@ main {
   transform: scale(1.1);
 }
 
+.highlight-color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 0.6rem;
+}
+
+.highlight-color-btn:hover, .highlight-color-btn.active {
+  border-color: #aaa;
+  transform: scale(1.1);
+}
+
+/* ── TOOL TOGGLE ─────────────────────────── */
+.tool-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tool-btn {
+  flex: 1;
+  background: var(--bg-panel-light);
+  border: 1px solid var(--border-mid);
+  color: var(--text-mid);
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.03em;
+}
+
+.tool-btn:hover, .tool-btn.active {
+  border-color: #888;
+  color: var(--text-light);
+  background: #333;
+}
+
 /* ── FONT BUTTONS ────────────────────────── */
 .font-row {
   display: flex;

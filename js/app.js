@@ -267,12 +267,36 @@
   });
 
   // ── TOOLBAR ────────────────────────────────────────────────────────
+  document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      blackoutCanvas.setMode(btn.dataset.tool);
+    });
+  });
+
   document.querySelectorAll('.brush-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       blackoutCanvas.setBrushSize(parseInt(btn.dataset.size));
     });
+  });
+
+  document.querySelectorAll('.highlight-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.highlight-color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      blackoutCanvas.setHighlightColor(btn.dataset.color);
+      // Picking a highlighter color implies you want to highlight
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tool-highlight').classList.add('active');
+      blackoutCanvas.setMode('highlight');
+    });
+  });
+
+  document.getElementById('btn-clear-highlights').addEventListener('click', () => {
+    blackoutCanvas.clearHighlights();
   });
 
   document.querySelectorAll('.color-btn').forEach(btn => {
