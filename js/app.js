@@ -53,6 +53,11 @@
   // Try to restore saved session
   const saved = blackoutCanvas.loadState();
   if (saved && saved.text) {
+    if (saved.meta && saved.meta.book) {
+      currentBookData = saved.meta.book;
+      currentPage = saved.meta.page;
+      populateBookUI();
+    }
     showPage();
     blackoutCanvas.setText(saved.text, canvasWidth());
     blackoutCanvas.render();
@@ -207,15 +212,23 @@
 
   async function renderPage() {
     if (!currentBookData || !currentPage) return;
+    populateBookUI();
+    showPage();
+    blackoutCanvas.strokes = [];
+    blackoutCanvas.meta = { book: currentBookData, page: currentPage };
+    blackoutCanvas.setText(currentPage.text, canvasWidth());
+  }
 
+  function populateBookUI() {
+    if (!currentBookData) return;
     const year = currentBookData.year < 0
       ? 'c.' + Math.abs(currentBookData.year) + ' BCE'
       : currentBookData.year;
 
-    bookTitleEl.textContent  = currentBookData.title;
-    bookChapterEl.textContent = currentPage.chapter || '';
+    bookTitleEl.textContent   = currentBookData.title;
+    bookChapterEl.textContent = (currentPage && currentPage.chapter) || '';
     bookAuthorEl.textContent  = currentBookData.author + ', ' + year;
-    pageNumEl.textContent     = 'p. ' + currentPage.pageNum;
+    pageNumEl.textContent     = currentPage ? ('p. ' + currentPage.pageNum) : '';
 
     // Sidebar
     sidebarTitleEl.textContent  = currentBookData.title;
@@ -227,10 +240,6 @@
       links += `<a href="${escAttr(currentBookData.wikipedia)}" target="_blank" class="sidebar-link">Wikipedia ↗</a>`;
     }
     sidebarLinksEl.innerHTML = links;
-
-    showPage();
-    blackoutCanvas.strokes = [];
-    blackoutCanvas.setText(currentPage.text, canvasWidth());
   }
 
   // ── NAVIGATION ─────────────────────────────────────────────────────

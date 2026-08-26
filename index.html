@@ -217,46 +217,6 @@
           <div id="sidebar-book-links"></div>
         </div>
 
-        <!-- Tool -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">tool</div>
-          <div class="tool-row">
-            <button id="tool-ink" class="tool-btn active" data-tool="ink">blackout</button>
-            <button id="tool-highlight" class="tool-btn" data-tool="highlight">highlighter</button>
-          </div>
-        </div>
-
-        <!-- Brush size -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">brush size</div>
-          <div class="brush-row">
-            <button class="brush-btn" data-size="3" title="pen">
-              <span class="brush-dot brush-pen"></span>
-            </button>
-            <button class="brush-btn" data-size="10" title="small">
-              <span class="brush-dot brush-sm"></span>
-            </button>
-            <button class="brush-btn active" data-size="16" title="medium">
-              <span class="brush-dot brush-md"></span>
-            </button>
-            <button class="brush-btn" data-size="24" title="large">
-              <span class="brush-dot brush-lg"></span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Highlighter color -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">highlighter color</div>
-          <div class="color-row">
-            <button class="highlight-color-btn active" data-color="#fff176" title="yellow" style="background:#fff176;"></button>
-            <button class="highlight-color-btn" data-color="#ff8a80" title="pink" style="background:#ff8a80;"></button>
-            <button class="highlight-color-btn" data-color="#80cbc4" title="green" style="background:#80cbc4;"></button>
-            <button class="highlight-color-btn" data-color="#82b1ff" title="blue" style="background:#82b1ff;"></button>
-          </div>
-          <button id="btn-clear-highlights" class="sidebar-action-btn">clear highlights</button>
-        </div>
-
         <!-- Page color -->
         <div class="sidebar-section">
           <div class="sidebar-label">page color</div>
@@ -278,9 +238,49 @@
           </div>
         </div>
 
-        <!-- Undo -->
+        <!-- Tool -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">tool</div>
+          <div class="tool-row">
+            <button id="tool-ink" class="tool-btn active" data-tool="ink">blackout</button>
+            <button id="tool-highlight" class="tool-btn" data-tool="highlight">highlighter</button>
+          </div>
+        </div>
+
+        <!-- Blackout brush size -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">blackout brush size</div>
+          <div class="brush-row">
+            <button class="brush-btn" data-size="3" title="pen">
+              <span class="brush-dot brush-pen"></span>
+            </button>
+            <button class="brush-btn" data-size="10" title="small">
+              <span class="brush-dot brush-sm"></span>
+            </button>
+            <button class="brush-btn active" data-size="16" title="medium">
+              <span class="brush-dot brush-md"></span>
+            </button>
+            <button class="brush-btn" data-size="24" title="large">
+              <span class="brush-dot brush-lg"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Undo (blackout strokes only) -->
         <div class="sidebar-section">
           <button id="btn-undo" class="sidebar-action-btn">↩ undo last stroke</button>
+        </div>
+
+        <!-- Highlighter color -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">highlighter color</div>
+          <div class="color-row">
+            <button class="highlight-color-btn active" data-color="#fff176" title="yellow" style="background:#fff176;"></button>
+            <button class="highlight-color-btn" data-color="#ff8a80" title="pink" style="background:#ff8a80;"></button>
+            <button class="highlight-color-btn" data-color="#80cbc4" title="green" style="background:#80cbc4;"></button>
+            <button class="highlight-color-btn" data-color="#82b1ff" title="blue" style="background:#82b1ff;"></button>
+          </div>
+          <button id="btn-clear-highlights" class="sidebar-action-btn">clear highlights</button>
         </div>
 
         <!-- Actions -->

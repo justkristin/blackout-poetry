@@ -6,6 +6,7 @@ class BlackoutCanvas {
     this.brushSize = 16;
     this.strokes = []; // for undo
     this.highlights = []; // highlighter marks, drawn under text
+    this.highlightSize = 16; // fixed size for highlighter — not user-selectable
     this.currentStroke = [];
     this.mode = 'ink'; // 'ink' (blackout) | 'highlight'
     this.highlightColor = '#fff176';
@@ -14,6 +15,7 @@ class BlackoutCanvas {
     this.fontSize = 13;
     this.lineHeight = 1.8;
     this.text = '';
+    this.meta = null; // book/page metadata, owned by app.js, persisted here for session restore
     document.getElementById('book-page').style.background = this.pageColor;
     this.bindEvents();
   }
@@ -209,7 +211,7 @@ class BlackoutCanvas {
     return {
       x: (clientX - rect.left) * scaleX,
       y: (clientY - rect.top) * scaleY,
-      size: this.brushSize
+      size: this.mode === 'highlight' ? this.highlightSize : this.brushSize
     };
   }
 
@@ -277,7 +279,8 @@ class BlackoutCanvas {
         font: this.font,
         pageColor: this.pageColor,
         brushSize: this.brushSize,
-        highlightColor: this.highlightColor
+        highlightColor: this.highlightColor,
+        meta: this.meta
       };
       localStorage.setItem('blackout_state', JSON.stringify(state));
     } catch(e) {
@@ -296,6 +299,7 @@ class BlackoutCanvas {
       this.pageColor = state.pageColor || '#faf8f3';
       this.brushSize = state.brushSize || 16;
       this.highlightColor = state.highlightColor || '#fff176';
+      this.meta = state.meta || null;
       return state;
     } catch(e) {
       return false;
