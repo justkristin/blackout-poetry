@@ -276,12 +276,30 @@
   });
 
   // ── TOOLBAR ────────────────────────────────────────────────────────
+  const unbrushBtn = document.getElementById('tool-unbrush');
+
+  // Leaving unbrush mode whenever a drawing action is chosen — picking a
+  // brush, a highlighter color, or a tool button all mean "I want to draw."
+  function exitUnbrush() {
+    blackoutCanvas.setUnbrush(false);
+    unbrushBtn.classList.remove('active');
+    bookPageEl.classList.remove('unbrush-active');
+  }
+
   document.querySelectorAll('.tool-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       blackoutCanvas.setMode(btn.dataset.tool);
+      exitUnbrush();
     });
+  });
+
+  unbrushBtn.addEventListener('click', () => {
+    const next = !blackoutCanvas.unbrushActive;
+    blackoutCanvas.setUnbrush(next);
+    unbrushBtn.classList.toggle('active', next);
+    bookPageEl.classList.toggle('unbrush-active', next);
   });
 
   document.querySelectorAll('.brush-btn').forEach(btn => {
@@ -289,6 +307,11 @@
       document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       blackoutCanvas.setBrushSize(parseInt(btn.dataset.size));
+      // Picking a blackout brush size implies you want to draw with it
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tool-ink').classList.add('active');
+      blackoutCanvas.setMode('ink');
+      exitUnbrush();
     });
   });
 
@@ -301,6 +324,7 @@
       document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('tool-highlight').classList.add('active');
       blackoutCanvas.setMode('highlight');
+      exitUnbrush();
     });
   });
 
@@ -327,6 +351,10 @@
 
   document.getElementById('btn-undo').addEventListener('click', () => {
     blackoutCanvas.undo();
+  });
+
+  document.getElementById('btn-micro-undo').addEventListener('click', () => {
+    blackoutCanvas.microUndo();
   });
 
   // ── SAVE / SHARE ───────────────────────────────────────────────────

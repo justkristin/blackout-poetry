@@ -16,6 +16,7 @@ class BlackoutCanvas {
     this.lineHeight = 1.8;
     this.text = '';
     this.meta = null; // book/page metadata, owned by app.js, persisted here for session restore
+    this.unbrushActive = false; // when true, taps remove the tapped stroke instead of drawing
     document.getElementById('book-page').style.background = this.pageColor;
     this.bindEvents();
   }
@@ -45,6 +46,10 @@ class BlackoutCanvas {
 
   setMode(mode) {
     this.mode = mode;
+  }
+
+  setUnbrush(active) {
+    this.unbrushActive = active;
   }
 
   setHighlightColor(color) {
@@ -202,6 +207,37 @@ class BlackoutCanvas {
     ctx.restore();
   }
 
+  // Finds the index of the topmost stroke in `arr` (a strokes[] or
+  // highlights[] array) with any point near (x, y). Highlights wrap their
+  // points in { points, color }; strokes are plain point arrays.
+  findStrokeAt(arr, x, y) {
+    const tolerance = 6; // a little slack beyond the point radius, easier to tap
+    for (let i = arr.length - 1; i >= 0; i--) {
+      const points = Array.isArray(arr[i]) ? arr[i] : arr[i].points;
+      for (const pt of points) {
+        const dx = x - pt.x;
+        const dy = y - pt.y;
+        const r = pt.size / 2 + tolerance;
+        if (dx * dx + dy * dy <= r * r) return i;
+      }
+    }
+    return -1;
+  }
+
+  // Removes the whole stroke tapped at (x, y), from whichever layer
+  // ('ink' or 'highlight') is currently the active tool.
+  tryUnbrushAt(x, y) {
+    const targetArr = this.mode === 'highlight' ? this.highlights : this.strokes;
+    const idx = this.findStrokeAt(targetArr, x, y);
+    if (idx === -1) return;
+    targetArr.splice(idx, 1);
+    this.render();
+    this.saveState();
+    if (this.mode === 'ink' && this.strokes.length === 0) {
+      document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('locked'));
+    }
+  }
+
   getPos(e) {
     const rect = this.canvas.getBoundingClientRect();
     const scaleX = this.canvas.width / rect.width;
@@ -218,9 +254,13 @@ class BlackoutCanvas {
   bindEvents() {
     const start = (e) => {
       e.preventDefault();
+      const pt = this.getPos(e);
+      if (this.unbrushActive) {
+        this.tryUnbrushAt(pt.x, pt.y);
+        return; // erasing, not drawing — don't start a stroke
+      }
       this.painting = true;
       this.currentStroke = [];
-      const pt = this.getPos(e);
       this.currentStroke.push(pt);
       this.render();
     };
@@ -267,6 +307,24 @@ class BlackoutCanvas {
       if (this.strokes.length === 0) {
         document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('locked'));
       }
+    }
+  }
+
+  // Removes just the last point-square of the last ink stroke. If that
+  // empties the stroke, the stroke itself is removed too — so holding
+  // micro-undo eats through the current stroke, then rolls into the
+  // previous one, square by square, just like undo() but fine-grained.
+  microUndo() {
+    if (!this.strokes.length) return;
+    const lastStroke = this.strokes[this.strokes.length - 1];
+    lastStroke.pop();
+    if (lastStroke.length === 0) {
+      this.strokes.pop();
+    }
+    this.render();
+    this.saveState();
+    if (this.strokes.length === 0) {
+      document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('locked'));
     }
   }
 
