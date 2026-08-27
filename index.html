@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blackout</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=IM+Fell+English:ital@0;1&family=Lexend&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
@@ -271,7 +272,6 @@
             <button id="tool-ink" class="tool-btn active" data-tool="ink">blackout</button>
             <button id="tool-highlight" class="tool-btn" data-tool="highlight">highlighter</button>
           </div>
-          <button id="tool-unbrush" class="sidebar-action-btn unbrush-btn">⌫ unbrush (tap a stroke to remove it)</button>
         </div>
 
         <!-- Blackout brush size -->
@@ -295,8 +295,9 @@
 
         <!-- Undo (blackout strokes only) -->
         <div class="sidebar-section">
-          <button id="btn-undo" class="sidebar-action-btn">↩ undo last stroke</button>
-          <button id="btn-micro-undo" class="sidebar-action-btn">↩ micro-undo (last square)</button>
+          <button id="btn-undo" class="sidebar-action-btn">↩ undo last blackout stroke</button>
+          <button id="btn-micro-undo" class="sidebar-action-btn">↩ micro-undo (last blackout square)</button>
+          <button id="btn-unbrush-ink" class="sidebar-action-btn unbrush-btn">⌫ select blackout to remove (tap a stroke)</button>
         </div>
 
         <!-- Highlighter color -->
@@ -308,7 +309,8 @@
             <button class="highlight-color-btn" data-color="#80cbc4" title="green" style="background:#80cbc4;"></button>
             <button class="highlight-color-btn" data-color="#82b1ff" title="blue" style="background:#82b1ff;"></button>
           </div>
-          <button id="btn-clear-highlights" class="sidebar-action-btn">clear highlights</button>
+          <button id="btn-clear-highlights" class="sidebar-action-btn">clear all highlights</button>
+          <button id="btn-unbrush-highlight" class="sidebar-action-btn unbrush-btn">⌫ select highlight to remove (tap a stroke)</button>
         </div>
 
         <!-- Actions -->

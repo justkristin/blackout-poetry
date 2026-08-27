@@ -304,15 +304,47 @@
   });
 
   // ── TOOLBAR ────────────────────────────────────────────────────────
-  const unbrushBtn = document.getElementById('tool-unbrush');
+  const unbrushInkBtn       = document.getElementById('btn-unbrush-ink');
+  const unbrushHighlightBtn = document.getElementById('btn-unbrush-highlight');
 
   // Leaving unbrush mode whenever a drawing action is chosen — picking a
   // brush, a highlighter color, or a tool button all mean "I want to draw."
   function exitUnbrush() {
     blackoutCanvas.setUnbrush(false);
-    unbrushBtn.classList.remove('active');
+    unbrushInkBtn.classList.remove('active');
+    unbrushHighlightBtn.classList.remove('active');
     bookPageEl.classList.remove('unbrush-active');
   }
+
+  // Each unbrush button is self-contained: it both picks its layer and
+  // arms unbrush, so it no longer depends on the blackout/highlighter
+  // tool row to know what it's targeting. The tool row is kept in sync
+  // as a status indicator.
+  function enterUnbrush(mode, btn) {
+    blackoutCanvas.setMode(mode);
+    blackoutCanvas.setUnbrush(true);
+    unbrushInkBtn.classList.toggle('active', btn === unbrushInkBtn);
+    unbrushHighlightBtn.classList.toggle('active', btn === unbrushHighlightBtn);
+    bookPageEl.classList.add('unbrush-active');
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(mode === 'highlight' ? 'tool-highlight' : 'tool-ink').classList.add('active');
+  }
+
+  unbrushInkBtn.addEventListener('click', () => {
+    if (blackoutCanvas.unbrushActive && blackoutCanvas.mode === 'ink') {
+      exitUnbrush();
+    } else {
+      enterUnbrush('ink', unbrushInkBtn);
+    }
+  });
+
+  unbrushHighlightBtn.addEventListener('click', () => {
+    if (blackoutCanvas.unbrushActive && blackoutCanvas.mode === 'highlight') {
+      exitUnbrush();
+    } else {
+      enterUnbrush('highlight', unbrushHighlightBtn);
+    }
+  });
 
   document.querySelectorAll('.tool-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -321,13 +353,6 @@
       blackoutCanvas.setMode(btn.dataset.tool);
       exitUnbrush();
     });
-  });
-
-  unbrushBtn.addEventListener('click', () => {
-    const next = !blackoutCanvas.unbrushActive;
-    blackoutCanvas.setUnbrush(next);
-    unbrushBtn.classList.toggle('active', next);
-    bookPageEl.classList.toggle('unbrush-active', next);
   });
 
   document.querySelectorAll('.brush-btn').forEach(btn => {
@@ -386,10 +411,11 @@
   });
 
   // ── SAVE / SHARE ───────────────────────────────────────────────────
-  const doSave = () => blackoutCanvas.download(currentBookData?.title);
+  const doSave  = () => blackoutCanvas.download(currentBookData?.title);
+  const doShare = () => blackoutCanvas.share(currentBookData?.title);
   document.getElementById('btn-save').addEventListener('click', doSave);
   document.getElementById('btn-save-sidebar').addEventListener('click', doSave);
-  document.getElementById('btn-share').addEventListener('click', doSave);
+  document.getElementById('btn-share').addEventListener('click', doShare);
 
   document.getElementById('btn-start-over').addEventListener('click', () => {
     if (confirm('Start over? Your current poem will be lost.')) {

@@ -365,6 +365,17 @@ class BlackoutCanvas {
   }
 
   download(title) {
+    this.exportImage(title, false);
+  }
+
+  share(title) {
+    this.exportImage(title, true);
+  }
+
+  // allowShare=true opens the OS share sheet when the browser supports it
+  // (nice for AirDrop/Messages); allowShare=false always saves the file
+  // straight to disk, no sheet, no prompt.
+  exportImage(title, allowShare) {
     const filename = (title || 'blackout-poem')
       .replace(/[^a-z0-9]/gi, '-')
       .toLowerCase() + '.png';
@@ -393,9 +404,10 @@ class BlackoutCanvas {
     );
 
     tempCanvas.toBlob(blob => {
-      if (navigator.share && navigator.canShare({ files: [new File([blob], filename, { type: 'image/png' })] })) {
+      const file = new File([blob], filename, { type: 'image/png' });
+      if (allowShare && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         navigator.share({
-          files: [new File([blob], filename, { type: 'image/png' })],
+          files: [file],
           title: 'Blackout poem'
         });
       } else {
