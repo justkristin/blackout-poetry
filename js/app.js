@@ -16,6 +16,7 @@
   const errorMsgEl       = document.getElementById('error-message');
   const bookPageEl       = document.getElementById('book-page');
   const pageNavEl        = document.getElementById('page-nav');
+  const pageNavTopEl     = document.getElementById('page-nav-top');
   const bookTitleEl      = document.getElementById('book-title');
   const bookChapterEl    = document.getElementById('book-chapter');
   const bookAuthorEl     = document.getElementById('book-author');
@@ -88,6 +89,7 @@
         if (selectedGenres.has(g)) selectedGenres.delete(g);
         else { selectedGenres.add(g); clearBookSelection(); }
         updateFilterUI();
+        scheduleFilteredLoad();
       });
     });
 
@@ -97,6 +99,7 @@
         if (selectedCenturies.has(c)) selectedCenturies.delete(c);
         else { selectedCenturies.add(c); clearBookSelection(); }
         updateFilterUI();
+        scheduleFilteredLoad();
       });
     });
 
@@ -104,7 +107,19 @@
       selectedGenres.clear();
       selectedCenturies.clear();
       updateFilterUI();
+      scheduleFilteredLoad();
     });
+  }
+
+  // Filter changes trigger a new random page automatically, debounced
+  // slightly so clicking several chips in a row doesn't fire a page
+  // load per click.
+  let filterLoadTimeout = null;
+  function scheduleFilteredLoad() {
+    clearTimeout(filterLoadTimeout);
+    filterLoadTimeout = setTimeout(() => {
+      loadRandomPage();
+    }, 200);
   }
 
   function updateFilterUI() {
@@ -165,6 +180,7 @@
         selectedGenres.clear();
         selectedCenturies.clear();
         updateFilterUI();
+        loadRandomPage();
       });
     });
 
@@ -243,29 +259,41 @@
   }
 
   // ── NAVIGATION ─────────────────────────────────────────────────────
-  document.getElementById('btn-prev').addEventListener('click', async () => {
+  async function goPrev() {
     if (!currentBookData || !currentPage) return;
     showLoading();
     const newOffset = Math.max(0, currentPage.charOffset - 1800);
     currentPage = extractPage(currentBookData.text, newOffset);
     await renderPage();
-  });
+  }
 
-  document.getElementById('btn-next').addEventListener('click', async () => {
+  async function goNext() {
     if (!currentBookData || !currentPage) return;
     showLoading();
     const newOffset = currentPage.charOffset + 1800;
     currentPage = extractPage(currentBookData.text, newOffset);
     await renderPage();
-  });
+  }
 
-  document.getElementById('btn-same-random').addEventListener('click', async () => {
+  async function goSameRandom() {
     if (!currentBookData) return;
     showLoading();
     const offset = getRandomOffset(currentBookData.text.length);
     currentPage = extractPage(currentBookData.text, offset);
     await renderPage();
-  });
+  }
+
+  // Wire both the top and bottom nav rows to the same functions, so
+  // they can never drift out of sync with each other.
+  ['btn-prev', 'btn-prev-top'].forEach(id =>
+    document.getElementById(id).addEventListener('click', goPrev)
+  );
+  ['btn-next', 'btn-next-top'].forEach(id =>
+    document.getElementById(id).addEventListener('click', goNext)
+  );
+  ['btn-same-random', 'btn-same-random-top'].forEach(id =>
+    document.getElementById(id).addEventListener('click', goSameRandom)
+  );
 
   document.getElementById('btn-new-random').addEventListener('click', () => {
     loadRandomPage();
@@ -376,6 +404,7 @@
     errorEl.style.display    = 'none';
     bookPageEl.style.display = 'none';
     pageNavEl.style.display  = 'none';
+    pageNavTopEl.style.display = 'none';
     bookInfoEl.style.display = 'none';
   }
 
@@ -384,6 +413,7 @@
     errorEl.style.display    = 'none';
     bookPageEl.style.display = 'block';
     pageNavEl.style.display  = 'flex';
+    pageNavTopEl.style.display = 'flex';
     bookInfoEl.style.display = 'block';
   }
 
@@ -392,6 +422,7 @@
     errorEl.style.display    = 'block';
     bookPageEl.style.display = 'none';
     pageNavEl.style.display  = 'none';
+    pageNavTopEl.style.display = 'none';
     errorMsgEl.textContent   = msg;
   }
 

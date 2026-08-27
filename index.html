@@ -109,6 +109,24 @@
       font-family: var(--font-ui);
     }
     .clear-filters:hover { color: var(--text-mid); }
+    /* or divider between search and filters */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 14px;
+      color: var(--text-dim);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-dark);
+    }
     /* sidebar links */
     .sidebar-link {
       display: inline-block;
@@ -148,12 +166,13 @@
         <div class="search-bar">
           <div class="book-search-wrap">
             <input type="text" id="book-search" class="book-search-input"
-              placeholder="Search for a title or author…"
+              placeholder="Type in a title or author name to select an available book…"
               autocomplete="off">
             <div id="autocomplete-list" class="autocomplete-list"></div>
           </div>
-          <button id="btn-new-random-sm" class="nav-btn" style="white-space:nowrap">↻ give me a page</button>
         </div>
+
+        <div class="or-divider"><span>or</span></div>
 
         <!-- Genre filter chips -->
         <div class="filter-section">
@@ -180,6 +199,13 @@
           <button id="btn-retry" class="nav-btn" style="margin-top:12px">try again</button>
         </div>
 
+        <!-- Navigation between pages (top) -->
+        <div id="page-nav-top" class="page-nav page-nav-top" style="display:none;">
+          <button id="btn-prev-top" class="page-nav-btn">← prev page</button>
+          <button id="btn-same-random-top" class="page-nav-btn">↻ another random page from this book</button>
+          <button id="btn-next-top" class="page-nav-btn">next page →</button>
+        </div>
+
         <!-- The book page -->
         <div id="book-page" class="book-page" style="display:none;">
           <div class="book-page-header">
@@ -196,7 +222,7 @@
         <!-- Navigation between pages -->
         <div id="page-nav" class="page-nav" style="display:none;">
           <button id="btn-prev" class="page-nav-btn">← prev page</button>
-          <button id="btn-same-random" class="page-nav-btn">↻ random page from this book</button>
+          <button id="btn-same-random" class="page-nav-btn">↻ another random page from this book</button>
           <button id="btn-next" class="page-nav-btn">next page →</button>
         </div>
 

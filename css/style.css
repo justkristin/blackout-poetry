@@ -238,6 +238,11 @@ main {
   flex-wrap: wrap;
 }
 
+.page-nav-top {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
 .page-nav-btn {
   background: var(--bg-panel);
   border: 1px solid var(--border-dark);
