@@ -273,6 +273,11 @@ main {
 .sidebar-section {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid var(--border-dark);
+  transition: background 0.15s;
+}
+
+.sidebar-section.tool-section-active {
+  background: var(--bg-panel-light);
 }
 
 .sidebar-section:last-child {
@@ -312,6 +317,7 @@ main {
 .brush-row {
   display: flex;
   gap: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
 .brush-btn {
@@ -383,14 +389,13 @@ main {
   transform: scale(1.1);
 }
 
-/* ── TOOL TOGGLE ─────────────────────────── */
-.tool-row {
+/* ── LINE DRAWING TYPE TOGGLE ────────────── */
+.linemode-row {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
 }
 
-.tool-btn {
+.linemode-btn {
   flex: 1;
   background: var(--bg-panel-light);
   border: 1px solid var(--border-mid);
@@ -404,12 +409,13 @@ main {
   letter-spacing: 0.03em;
 }
 
-.tool-btn:hover, .tool-btn.active {
+.linemode-btn:hover, .linemode-btn.active {
   border-color: #888;
   color: var(--text-light);
   background: #333;
 }
 
+/* ── UNBRUSH BUTTONS ─────────────────────── */
 .unbrush-btn.active {
   background: #4a2626;
   border-color: #a55;

@@ -306,9 +306,21 @@
   // ── TOOLBAR ────────────────────────────────────────────────────────
   const unbrushInkBtn       = document.getElementById('btn-unbrush-ink');
   const unbrushHighlightBtn = document.getElementById('btn-unbrush-highlight');
+  const sectionBlackoutEl   = document.getElementById('section-blackout');
+  const sectionHighlightEl  = document.getElementById('section-highlight');
+
+  // The Tool toggle is gone — instead, whichever section (blackout or
+  // highlighter) matches the current mode gets a subtle background tint,
+  // so "what's currently active" reads from the section itself.
+  function syncActiveSection() {
+    const isHighlight = blackoutCanvas.mode === 'highlight';
+    sectionBlackoutEl.classList.toggle('tool-section-active', !isHighlight);
+    sectionHighlightEl.classList.toggle('tool-section-active', isHighlight);
+  }
+  syncActiveSection(); // reflect the default ('ink') on load
 
   // Leaving unbrush mode whenever a drawing action is chosen — picking a
-  // brush, a highlighter color, or a tool button all mean "I want to draw."
+  // brush or a highlighter color both mean "I want to draw."
   function exitUnbrush() {
     blackoutCanvas.setUnbrush(false);
     unbrushInkBtn.classList.remove('active');
@@ -317,17 +329,14 @@
   }
 
   // Each unbrush button is self-contained: it both picks its layer and
-  // arms unbrush, so it no longer depends on the blackout/highlighter
-  // tool row to know what it's targeting. The tool row is kept in sync
-  // as a status indicator.
+  // arms unbrush.
   function enterUnbrush(mode, btn) {
     blackoutCanvas.setMode(mode);
     blackoutCanvas.setUnbrush(true);
     unbrushInkBtn.classList.toggle('active', btn === unbrushInkBtn);
     unbrushHighlightBtn.classList.toggle('active', btn === unbrushHighlightBtn);
     bookPageEl.classList.add('unbrush-active');
-    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(mode === 'highlight' ? 'tool-highlight' : 'tool-ink').classList.add('active');
+    syncActiveSection();
   }
 
   unbrushInkBtn.addEventListener('click', () => {
@@ -346,12 +355,11 @@
     }
   });
 
-  document.querySelectorAll('.tool-btn').forEach(btn => {
+  document.querySelectorAll('.linemode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.linemode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      blackoutCanvas.setMode(btn.dataset.tool);
-      exitUnbrush();
+      blackoutCanvas.setLineMode(btn.dataset.linemode === 'line');
     });
   });
 
@@ -361,10 +369,9 @@
       btn.classList.add('active');
       blackoutCanvas.setBrushSize(parseInt(btn.dataset.size));
       // Picking a blackout brush size implies you want to draw with it
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tool-ink').classList.add('active');
       blackoutCanvas.setMode('ink');
       exitUnbrush();
+      syncActiveSection();
     });
   });
 
@@ -374,10 +381,9 @@
       btn.classList.add('active');
       blackoutCanvas.setHighlightColor(btn.dataset.color);
       // Picking a highlighter color implies you want to highlight
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tool-highlight').classList.add('active');
       blackoutCanvas.setMode('highlight');
       exitUnbrush();
+      syncActiveSection();
     });
   });
 

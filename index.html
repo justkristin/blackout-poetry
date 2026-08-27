@@ -265,17 +265,17 @@
           </div>
         </div>
 
-        <!-- Tool -->
+        <!-- Line drawing type -->
         <div class="sidebar-section">
-          <div class="sidebar-label">tool</div>
-          <div class="tool-row">
-            <button id="tool-ink" class="tool-btn active" data-tool="ink">blackout</button>
-            <button id="tool-highlight" class="tool-btn" data-tool="highlight">highlighter</button>
+          <div class="sidebar-label">line drawing type</div>
+          <div class="linemode-row">
+            <button id="linemode-freehand" class="linemode-btn active" data-linemode="freehand">freehand</button>
+            <button id="linemode-line" class="linemode-btn" data-linemode="line">line tool</button>
           </div>
         </div>
 
-        <!-- Blackout brush size -->
-        <div class="sidebar-section">
+        <!-- Blackout tools (brush size + editing, one container — no internal divider) -->
+        <div class="sidebar-section" id="section-blackout">
           <div class="sidebar-label">blackout brush size</div>
           <div class="brush-row">
             <button class="brush-btn" data-size="3" title="pen">
@@ -291,17 +291,13 @@
               <span class="brush-dot brush-lg"></span>
             </button>
           </div>
-        </div>
-
-        <!-- Undo (blackout strokes only) -->
-        <div class="sidebar-section">
           <button id="btn-undo" class="sidebar-action-btn">↩ undo last blackout stroke</button>
           <button id="btn-micro-undo" class="sidebar-action-btn">↩ micro-undo (last blackout square)</button>
           <button id="btn-unbrush-ink" class="sidebar-action-btn unbrush-btn">⌫ select blackout to remove (tap a stroke)</button>
         </div>
 
         <!-- Highlighter color -->
-        <div class="sidebar-section">
+        <div class="sidebar-section" id="section-highlight">
           <div class="sidebar-label">highlighter color</div>
           <div class="color-row">
             <button class="highlight-color-btn active" data-color="#fff176" title="yellow" style="background:#fff176;"></button>

@@ -17,6 +17,8 @@ class BlackoutCanvas {
     this.text = '';
     this.meta = null; // book/page metadata, owned by app.js, persisted here for session restore
     this.unbrushActive = false; // when true, taps remove the tapped stroke instead of drawing
+    this.lineMode = false; // when true, taps place straight-line endpoints instead of freehand painting
+    this.pendingLineStart = null; // first click of a pending line, waiting for the second
     document.getElementById('book-page').style.background = this.pageColor;
     this.bindEvents();
   }
@@ -46,10 +48,24 @@ class BlackoutCanvas {
 
   setMode(mode) {
     this.mode = mode;
+    this.cancelPendingLine(); // a pending line belongs to the tool that started it
   }
 
   setUnbrush(active) {
     this.unbrushActive = active;
+    this.cancelPendingLine();
+  }
+
+  setLineMode(active) {
+    this.lineMode = active;
+    this.cancelPendingLine();
+  }
+
+  cancelPendingLine() {
+    if (this.pendingLineStart) {
+      this.pendingLineStart = null;
+      this.render();
+    }
   }
 
   setHighlightColor(color) {
@@ -65,6 +81,7 @@ class BlackoutCanvas {
   setText(text, width) {
     this.text = text;
     this.canvas.width = width;
+    this.cancelPendingLine(); // don't carry a half-placed line onto a new page
     this.layoutText();
     this.render();
   }
@@ -174,6 +191,21 @@ class BlackoutCanvas {
     if (this.mode === 'ink' && this.currentStroke.length) {
       this.drawStroke(this.currentStroke);
     }
+
+    // Marker for a pending line's start point — no live preview, just a
+    // static dot so you don't lose track of being mid-line.
+    if (this.pendingLineStart) {
+      const p = this.pendingLineStart;
+      ctx.save();
+      ctx.fillStyle = '#e05252';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#faf8f3';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
   drawStroke(points) {
@@ -238,6 +270,42 @@ class BlackoutCanvas {
     }
   }
 
+  // Builds evenly-spaced points along a straight line between two clicks,
+  // dense enough to render as a continuous stroke via the same per-point
+  // fillRect drawing that freehand strokes use.
+  buildLinePoints(p1, p2, size) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const spacing = Math.max(2, size * 0.35);
+    const steps = Math.max(1, Math.round(dist / spacing));
+    const points = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      points.push({ x: p1.x + dx * t, y: p1.y + dy * t, size });
+    }
+    return points;
+  }
+
+  // Commits the line from the pending start point to (x, y) as a normal
+  // stroke — same array, same undo/unbrush/font-locking behavior as any
+  // freehand stroke.
+  commitLine(x, y) {
+    const start = this.pendingLineStart;
+    this.pendingLineStart = null;
+    const size = start.size;
+    const points = this.buildLinePoints(start, { x, y }, size);
+    if (this.mode === 'highlight') {
+      this.highlights.push({ points, color: this.highlightColor });
+    } else {
+      this.strokes.push(points);
+      document.querySelectorAll('.font-btn').forEach(b => b.classList.add('locked'));
+    }
+    this.render();
+    this.saveState();
+  }
+
+
   getPos(e) {
     const rect = this.canvas.getBoundingClientRect();
     const scaleX = this.canvas.width / rect.width;
@@ -258,6 +326,15 @@ class BlackoutCanvas {
       if (this.unbrushActive) {
         this.tryUnbrushAt(pt.x, pt.y);
         return; // erasing, not drawing — don't start a stroke
+      }
+      if (this.lineMode) {
+        if (!this.pendingLineStart) {
+          this.pendingLineStart = pt; // first click — mark it and wait for the second
+          this.render();
+        } else {
+          this.commitLine(pt.x, pt.y); // second click — draw the straight line
+        }
+        return;
       }
       this.painting = true;
       this.currentStroke = [];
@@ -296,6 +373,10 @@ class BlackoutCanvas {
     this.canvas.addEventListener('touchstart', start, { passive: false });
     this.canvas.addEventListener('touchmove', move, { passive: false });
     this.canvas.addEventListener('touchend', end);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.cancelPendingLine();
+    });
   }
 
   undo() {
@@ -376,31 +457,84 @@ class BlackoutCanvas {
   // (nice for AirDrop/Messages); allowShare=false always saves the file
   // straight to disk, no sheet, no prompt.
   exportImage(title, allowShare) {
+    this.cancelPendingLine(); // never bake a stray marker dot into a saved file
     const filename = (title || 'blackout-poem')
       .replace(/[^a-z0-9]/gi, '-')
       .toLowerCase() + '.png';
 
-    // Add attribution footer
-    const padding = 10;
-    const footerH = 30;
+    const meta = this.meta || {};
+    const book = meta.book || {};
+    const page = meta.page || {};
+    const year = (typeof book.year === 'number' && book.year < 0)
+      ? 'c. ' + Math.abs(book.year) + ' BCE'
+      : book.year;
+    const authorLine = book.author ? (year != null ? `${book.author}, ${year}` : book.author) : '';
+    const pageLine = page.pageNum ? `p. ${page.pageNum}` : '';
+
+    const sidePad = 20;
+    const headerH = page.chapter ? 62 : 46;
+    const footerInfoH = 34;
+    const attributionH = 30;
+
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = this.canvas.width;
-    tempCanvas.height = this.canvas.height + footerH;
+    tempCanvas.height = headerH + this.canvas.height + footerInfoH + attributionH;
     const tCtx = tempCanvas.getContext('2d');
+    const w = tempCanvas.width;
+    const cx = w / 2;
 
-    // Copy main canvas
-    tCtx.drawImage(this.canvas, 0, 0);
-
-    // Footer
+    // Page-color background behind the whole export
     tCtx.fillStyle = this.pageColor;
-    tCtx.fillRect(0, this.canvas.height, this.canvas.width, footerH);
+    tCtx.fillRect(0, 0, w, tempCanvas.height);
+
+    // ── Header: book title + chapter, mirroring .book-page-header ──
+    tCtx.textAlign = 'center';
+    tCtx.textBaseline = 'alphabetic';
+    tCtx.fillStyle = '#666';
+    tCtx.font = `italic 13px 'Lora', Georgia, serif`;
+    tCtx.fillText(book.title || '', cx, 22);
+
+    if (page.chapter) {
+      tCtx.fillStyle = '#aaa';
+      tCtx.font = `11px 'Lexend', Arial, sans-serif`;
+      tCtx.fillText(page.chapter, cx, 38);
+    }
+
+    tCtx.strokeStyle = '#ccc';
+    tCtx.lineWidth = 1;
+    tCtx.beginPath();
+    tCtx.moveTo(sidePad, headerH - 8);
+    tCtx.lineTo(w - sidePad, headerH - 8);
+    tCtx.stroke();
+
+    // ── The poem itself ──
+    tCtx.drawImage(this.canvas, 0, headerH);
+
+    // ── Footer: author + page number, mirroring .book-page-footer ──
+    const footerTop = headerH + this.canvas.height;
+    tCtx.strokeStyle = '#ccc';
+    tCtx.beginPath();
+    tCtx.moveTo(sidePad, footerTop + 8);
+    tCtx.lineTo(w - sidePad, footerTop + 8);
+    tCtx.stroke();
+
+    tCtx.font = `italic 11px 'Lora', Georgia, serif`;
+    tCtx.fillStyle = '#aaa';
+    tCtx.textAlign = 'left';
+    tCtx.fillText(authorLine, sidePad, footerTop + 26);
+    tCtx.textAlign = 'right';
+    tCtx.fillText(pageLine, w - sidePad, footerTop + 26);
+
+    // ── Attribution footer (unchanged) ──
+    const attribTop = footerTop + footerInfoH;
     tCtx.fillStyle = '#aaa';
     tCtx.font = `11px Arial, sans-serif`;
+    tCtx.textAlign = 'left';
     tCtx.textBaseline = 'middle';
     tCtx.fillText(
       `${window.location.hostname} · text from Project Gutenberg`,
-      padding,
-      this.canvas.height + footerH / 2
+      10,
+      attribTop + attributionH / 2
     );
 
     tempCanvas.toBlob(blob => {
