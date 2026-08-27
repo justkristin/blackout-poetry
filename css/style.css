@@ -78,6 +78,8 @@ header {
   cursor: pointer;
   letter-spacing: 0.03em;
   transition: all 0.15s;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .nav-btn:hover {

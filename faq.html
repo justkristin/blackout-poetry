@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Blackout</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=IM+Fell+English:ital@0;1&family=Lexend&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .faq-layout {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 4rem;
+    }
+
+    .faq-intro {
+      background: var(--cream);
+      color: #2a2a2a;
+      border-radius: 2px;
+      padding: 2rem 2.25rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      margin-bottom: 2rem;
+    }
+
+    .faq-intro h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .faq-intro .faq-subtitle {
+      font-size: 0.8rem;
+      color: #777;
+      letter-spacing: 0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .faq-intro p {
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-size: 0.92rem;
+    }
+
+    .faq-intro ol {
+      margin: 0 0 1rem 1.3rem;
+      line-height: 1.8;
+      font-size: 0.92rem;
+    }
+
+    .faq-intro strong {
+      font-weight: 600;
+    }
+
+    .faq-section-label {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-light);
+      margin: 2rem 0 0.75rem;
+    }
+
+    .faq-item {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+      overflow: hidden;
+    }
+
+    .faq-item summary {
+      padding: 0.85rem 1.1rem;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      color: var(--text-light);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: background 0.15s;
+    }
+
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item summary::before {
+      content: '▓';
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+
+    .faq-item:hover summary,
+    .faq-item[open] summary {
+      background: var(--bg-panel-light);
+    }
+
+    .faq-item[open] summary::before {
+      color: var(--text-light);
+    }
+
+    .faq-answer {
+      padding: 0 1.1rem 1rem 2.5rem;
+      color: var(--text-mid);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .faq-answer p {
+      margin-bottom: 0.6rem;
+    }
+
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    .faq-answer code {
+      background: var(--bg-panel-light);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="site-name">▓ Blackout</span>
+        <span class="site-tagline">every page holds a poem</span>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-btn nav-btn-primary">← back to blackout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="faq-layout">
+
+      <div class="faq-intro">
+        <h1>How it works</h1>
+        <div class="faq-subtitle">a quick start, then the fine print below</div>
+
+        <p>Blackout poetry — sometimes called erasure poetry — starts with someone else's words. You take a page of existing text and remove most of it, leaving only a handful of words behind. What's left, read in order, becomes your poem. This tool gives you real pages from real books to work with, and a few ways to do the removing (and un-removing).</p>
+
+        <ol>
+          <li><strong>Get a page.</strong> Land on a random one, search for a specific title or author, or narrow things down by genre and century.</li>
+          <li><strong>Pick your tool.</strong> Blackout to cross words out, highlighter to draw attention to them instead.</li>
+          <li><strong>Mark up the page.</strong> Freehand or straight lines, whichever suits the moment.</li>
+          <li><strong>Read what's left.</strong> The words you didn't cover are your poem.</li>
+          <li><strong>Save it.</strong> Download a PNG of the finished page, portrait or square.</li>
+        </ol>
+
+        <p>Everything below fills in the details — brush sizes, undo, fixing a stray mark, all of it.</p>
+      </div>
+
+      <div class="faq-section-label">Choosing a page</div>
+
+      <details class="faq-item">
+        <summary>What's the difference between searching and filtering?</summary>
+        <div class="faq-answer">
+          <p>Search picks one exact book — type a title or author and select it from the list, and you'll get pages from that book specifically.</p>
+          <p>Filters (genre, century) narrow a <em>pool</em> instead — check a few boxes and you'll get a random page from any book that matches. They're separate paths: picking a search result clears any filters, and picking a filter clears the search box.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do filters apply automatically?</summary>
+        <div class="faq-answer">
+          <p>Yes — the moment you click a genre or century chip (or clear them), a new random page loads under the new constraints. No extra "apply" step.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How do I get another page without losing my place?</summary>
+        <div class="faq-answer">
+          <p>The <code>← prev page</code> / <code>another random page from this book</code> / <code>next page →</code> row (it appears both above and below the page) all stay within whatever book you're currently reading. The header's <code>give me a page</code> button is the wider one — it'll jump to a totally new book if you haven't searched or filtered for something specific.</p>
+        </div>
+      </details>
+
+      <div class="faq-section-label">Marking up the page</div>
+
+      <details class="faq-item">
+        <summary>What's the difference between blackout and highlighter?</summary>
+        <div class="faq-answer">
+          <p>Blackout covers words completely — the classic redacted look. Highlighter is translucent and sits under the text, so the words stay readable but get a wash of color over them. Use whichever fits the poem you're after; nothing stops you from using both on the same page.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What do the brush sizes do?</summary>
+        <div class="faq-answer">
+          <p>Blackout has four: a thin ballpoint-pen line, plus small, medium, and large squares — useful for anything from crossing out a single letter to blacking out a whole line. Highlighter uses one fixed size, since it's meant to mark words, not cover them precisely.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Freehand vs. the line tool — what's the difference?</summary>
+        <div class="faq-answer">
+          <p>Freehand follows your mouse or finger exactly, for the loose, scribbled look most blackout poetry has. The line tool instead draws a perfectly straight line between two clicks — click once to start, click again to finish. It's handy for cleanly striking through a whole line of text.</p>
+          <p>Switch between them any time under <strong>line drawing type</strong>. Started a line by mistake? Press <code>Escape</code> to cancel it before the second click.</p>
+        </div>
+      </details>
+
+      <div class="faq-section-label">Fixing mistakes</div>
+
+      <details class="faq-item">
+        <summary>I made a stray mark — how do I get rid of it?</summary>
+        <div class="faq-answer">
+          <p>A few options, depending on what you need:</p>
+          <p><strong>Undo last blackout stroke</strong> removes your most recent ink mark entirely. <strong>Micro-undo</strong> removes it one small square at a time, if you only want to trim part of a stroke rather than the whole thing.</p>
+          <p><strong>Select blackout to remove</strong> (or the highlighter equivalent) lets you tap directly on any stroke — even an old one, not just your last — to delete just that one.</p>
+          <p><strong>Clear all highlights</strong> wipes every highlight mark on the page in one go, if you'd rather start that layer over completely.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Why won't the font let me change it anymore?</summary>
+        <div class="faq-answer">
+          <p>Once you've made your first blackout stroke, the font locks — changing it mid-poem would shift the text underneath and throw off everything you've already covered. Undo every stroke and it unlocks again. Highlighter marks don't lock the font, since they don't cover the text.</p>
+        </div>
+      </details>
+
+      <div class="faq-section-label">Saving your poem</div>
+
+      <details class="faq-item">
+        <summary>What's the difference between "save poem" and "share"?</summary>
+        <div class="faq-answer">
+          <p><code>save poem</code> always downloads the finished image straight to your device — no extra dialog. <code>share</code> opens your device or browser's native share sheet instead, so you can send it directly to Messages, AirDrop, or wherever, if that's supported where you're using this.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What's "save shape"?</summary>
+        <div class="faq-answer">
+          <p>Portrait keeps the image's natural height — most pages are taller than they are wide. Square pads the image out evenly on the shorter side so it fits a 1:1 frame, handy for posting somewhere that expects square images. On a very long poem, square mode can leave a fair amount of empty margin on the sides — worth a glance before sharing.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is my poem saved anywhere besides my own device?</summary>
+        <div class="faq-answer">
+          <p>No — everything happens right in your browser. Your in-progress poem is kept in your browser's local storage purely so it's still there if you reload the page; nothing gets sent anywhere until you explicitly choose to save or share the finished image yourself.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>I saw a warning that my progress isn't being saved — what does that mean?</summary>
+        <div class="faq-answer">
+          <p>Some browser settings — private/incognito windows especially — block the local storage this tool uses to remember your in-progress poem between reloads. If you see that warning, your work is still fine as long as you don't reload or close the tab; just save the image when you're done rather than counting on it still being there later.</p>
+        </div>
+      </details>
+
+      <div class="faq-section-label">About the texts</div>
+
+      <details class="faq-item">
+        <summary>Where do the books come from?</summary>
+        <div class="faq-answer">
+          <p>Every text here comes from <a href="https://www.gutenberg.org" target="_blank" class="sidebar-link">Project Gutenberg</a>, a volunteer effort that digitizes and freely shares public-domain books. If you end up loving this tool, consider <a href="https://www.gutenberg.org/donate/" target="_blank" class="sidebar-link">donating to them</a> — none of this exists without their work.</p>
+        </div>
+      </details>
+
+    </div>
+  </main>
+
+</body>
+</html>
