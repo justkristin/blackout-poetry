@@ -19,6 +19,9 @@ class BlackoutCanvas {
     this.unbrushActive = false; // when true, taps remove the tapped stroke instead of drawing
     this.lineMode = false; // when true, taps place straight-line endpoints instead of freehand painting
     this.pendingLineStart = null; // first click of a pending line, waiting for the second
+    this.exportShape = 'portrait'; // 'portrait' (natural height) | 'square' (padded to a square)
+    this.storageWarned = false; // fires onStorageError at most once per session
+    this.onStorageError = null; // set by app.js to show a UI warning
     document.getElementById('book-page').style.background = this.pageColor;
     this.bindEvents();
   }
@@ -59,6 +62,10 @@ class BlackoutCanvas {
   setLineMode(active) {
     this.lineMode = active;
     this.cancelPendingLine();
+  }
+
+  setExportShape(shape) {
+    this.exportShape = shape;
   }
 
   cancelPendingLine() {
@@ -424,6 +431,11 @@ class BlackoutCanvas {
       localStorage.setItem('blackout_state', JSON.stringify(state));
     } catch(e) {
       console.warn('Could not save to localStorage:', e);
+      // Only surface this once per session — no point nagging on every stroke
+      if (!this.storageWarned) {
+        this.storageWarned = true;
+        if (typeof this.onStorageError === 'function') this.onStorageError();
+      }
     }
   }
 
@@ -476,16 +488,39 @@ class BlackoutCanvas {
     const footerInfoH = 34;
     const attributionH = 30;
 
+    const contentW = this.canvas.width;
+    const contentH = headerH + this.canvas.height + footerInfoH + attributionH;
+
+    // Square mode pads out to a square by centering the natural (portrait)
+    // content on the larger dimension — it doesn't scale or crop anything.
+    let finalW = contentW;
+    let finalH = contentH;
+    let xOffset = 0;
+    let yOffset = 0;
+    if (this.exportShape === 'square') {
+      const side = Math.max(contentW, contentH);
+      finalW = side;
+      finalH = side;
+      xOffset = (side - contentW) / 2;
+      yOffset = (side - contentH) / 2;
+    }
+
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = this.canvas.width;
-    tempCanvas.height = headerH + this.canvas.height + footerInfoH + attributionH;
+    tempCanvas.width = finalW;
+    tempCanvas.height = finalH;
     const tCtx = tempCanvas.getContext('2d');
-    const w = tempCanvas.width;
+    const w = contentW;
     const cx = w / 2;
 
-    // Page-color background behind the whole export
+    // Page-color background behind the whole export (including any padding)
     tCtx.fillStyle = this.pageColor;
-    tCtx.fillRect(0, 0, w, tempCanvas.height);
+    tCtx.fillRect(0, 0, finalW, finalH);
+
+    // Shift all the content-space drawing below onto its centered position —
+    // everything from here down is written exactly as if drawing a plain
+    // portrait image at (0,0).
+    tCtx.save();
+    tCtx.translate(xOffset, yOffset);
 
     // ── Header: book title + chapter, mirroring .book-page-header ──
     tCtx.textAlign = 'center';
@@ -536,6 +571,8 @@ class BlackoutCanvas {
       10,
       attribTop + attributionH / 2
     );
+
+    tCtx.restore();
 
     tempCanvas.toBlob(blob => {
       const file = new File([blob], filename, { type: 'image/png' });

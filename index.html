@@ -157,6 +157,11 @@
     </div>
   </header>
 
+  <div id="storage-warning" class="storage-warning" style="display:none;">
+    <span>⚠ Your browser isn't saving progress right now (private browsing or storage may be blocked) — save your poem before navigating away.</span>
+    <button id="storage-warning-dismiss" aria-label="Dismiss">×</button>
+  </div>
+
   <main>
     <div class="app-layout">
 
@@ -307,6 +312,15 @@
           </div>
           <button id="btn-clear-highlights" class="sidebar-action-btn">clear all highlights</button>
           <button id="btn-unbrush-highlight" class="sidebar-action-btn unbrush-btn">⌫ select highlight to remove (tap a stroke)</button>
+        </div>
+
+        <!-- Save shape -->
+        <div class="sidebar-section">
+          <div class="sidebar-label">save shape</div>
+          <div class="shape-row">
+            <button id="shape-portrait" class="shape-btn active" data-shape="portrait">portrait</button>
+            <button id="shape-square" class="shape-btn" data-shape="square">square</button>
+          </div>
         </div>
 
         <!-- Actions -->

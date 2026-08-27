@@ -43,6 +43,14 @@
   // ── INIT ───────────────────────────────────────────────────────────
   blackoutCanvas = new BlackoutCanvas(canvasEl);
 
+  const storageWarningEl = document.getElementById('storage-warning');
+  document.getElementById('storage-warning-dismiss').addEventListener('click', () => {
+    storageWarningEl.style.display = 'none';
+  });
+  blackoutCanvas.onStorageError = () => {
+    storageWarningEl.style.display = 'flex';
+  };
+
   try {
     manifest = await loadManifest();
     buildFilterUI();
@@ -360,6 +368,14 @@
       document.querySelectorAll('.linemode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       blackoutCanvas.setLineMode(btn.dataset.linemode === 'line');
+    });
+  });
+
+  document.querySelectorAll('.shape-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      blackoutCanvas.setExportShape(btn.dataset.shape);
     });
   });
 
