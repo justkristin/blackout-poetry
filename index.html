@@ -99,17 +99,27 @@
     }
     .filter-chip:hover { border-color: var(--border-mid); color: var(--text-light); }
     .filter-chip.active { background: var(--bg-panel-light); border-color: #888; color: var(--text-light); }
-    .clear-filters {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      cursor: pointer;
-      text-decoration: underline;
-      background: none;
-      border: none;
-      padding: 0;
+    .clear-filters-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-mid);
+      color: var(--text-mid);
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
       font-family: var(--font-ui);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      margin-top: 0.6rem;
+      transition: all 0.15s;
     }
-    .clear-filters:hover { color: var(--text-mid); }
+    .clear-filters-btn:hover {
+      border-color: #888;
+      color: var(--text-light);
+      background: var(--bg-panel-light);
+    }
     /* or divider between search and filters */
     .or-divider {
       display: flex;
@@ -190,10 +200,12 @@
         <!-- Century filter chips -->
         <div class="filter-section">
           <div class="filter-section-label">Century</div>
-          <div class="chip-row" id="century-chips">
-            <button class="clear-filters" id="clear-filters" style="display:none">Clear filters</button>
-          </div>
+          <div class="chip-row" id="century-chips"></div>
         </div>
+
+        <!-- Clear filters — own container, so it survives the chip rows
+             being rebuilt via innerHTML whenever the manifest loads -->
+        <button class="clear-filters-btn" id="clear-filters" style="display:none">✕ clear filters</button>
 
         <!-- Loading state -->
         <div id="loading-state" class="loading-state">
@@ -207,6 +219,7 @@
         </div>
 
         <!-- Navigation between pages (top) -->
+        <div id="page-nav-divider" class="page-nav-divider" style="display:none;"></div>
         <div id="page-nav-top" class="page-nav page-nav-top" style="display:none;">
           <button id="btn-prev-top" class="page-nav-btn">← prev page</button>
           <button id="btn-same-random-top" class="page-nav-btn">↻ another random page from this book</button>

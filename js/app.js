@@ -17,6 +17,7 @@
   const bookPageEl       = document.getElementById('book-page');
   const pageNavEl        = document.getElementById('page-nav');
   const pageNavTopEl     = document.getElementById('page-nav-top');
+  const pageNavDividerEl = document.getElementById('page-nav-divider');
   const bookTitleEl      = document.getElementById('book-title');
   const bookChapterEl    = document.getElementById('book-chapter');
   const bookAuthorEl     = document.getElementById('book-author');
@@ -239,8 +240,12 @@
     populateBookUI();
     showPage();
     blackoutCanvas.strokes = [];
+    blackoutCanvas.highlights = [];
     blackoutCanvas.meta = { book: currentBookData, page: currentPage };
     blackoutCanvas.setText(currentPage.text, canvasWidth());
+    // Fresh page, fresh strokes — the font picker shouldn't still look
+    // locked from whatever you did on the previous page.
+    document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('locked'));
   }
 
   function populateBookUI() {
@@ -453,6 +458,7 @@
     bookPageEl.style.display = 'none';
     pageNavEl.style.display  = 'none';
     pageNavTopEl.style.display = 'none';
+    pageNavDividerEl.style.display = 'none';
     bookInfoEl.style.display = 'none';
   }
 
@@ -462,6 +468,7 @@
     bookPageEl.style.display = 'block';
     pageNavEl.style.display  = 'flex';
     pageNavTopEl.style.display = 'flex';
+    pageNavDividerEl.style.display = 'block';
     bookInfoEl.style.display = 'block';
   }
 
@@ -471,6 +478,7 @@
     bookPageEl.style.display = 'none';
     pageNavEl.style.display  = 'none';
     pageNavTopEl.style.display = 'none';
+    pageNavDividerEl.style.display = 'none';
     errorMsgEl.textContent   = msg;
   }
 
