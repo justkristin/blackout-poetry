@@ -55,9 +55,11 @@
   }
 
   const sidebarEl = document.querySelector('.sidebar');
+  const fabMainEl = document.getElementById('sidebar-open-fab');
   let sidebarSavedScrollY = 0;
 
   function openSidebar() {
+    fabMainEl.classList.remove('expanded'); // cluster collapses behind the drawer
     sidebarSavedScrollY = window.scrollY;
     // iOS Safari doesn't reliably respect `overflow:hidden` on body to
     // stop background scroll — pinning it with `position:fixed` does.
@@ -75,8 +77,15 @@
     window.scrollTo(0, sidebarSavedScrollY);
   }
 
-  document.getElementById('sidebar-open-fab').addEventListener('click', openSidebar);
+  // Main ▓: idle → reveals the quick-access cluster (toggle/undo/drawer).
+  // Tapped again while the cluster is showing, it collapses back to idle —
+  // it does NOT open the drawer itself anymore; that's #fab-drawer's job.
+  fabMainEl.addEventListener('click', () => {
+    fabMainEl.classList.toggle('expanded');
+  });
+
   document.getElementById('sidebar-close').addEventListener('click', closeSidebar);
+  document.getElementById('fab-drawer').addEventListener('click', openSidebar);
 
   const storageWarningEl = document.getElementById('storage-warning');
   document.getElementById('storage-warning-dismiss').addEventListener('click', () => {
@@ -358,16 +367,36 @@
   const unbrushHighlightBtn = document.getElementById('btn-unbrush-highlight');
   const sectionBlackoutEl   = document.getElementById('section-blackout');
   const sectionHighlightEl  = document.getElementById('section-highlight');
+  const fabToggleEl         = document.getElementById('fab-toggle');
+  const fabToggleDotEl      = document.getElementById('fab-toggle-dot');
 
   // The Tool toggle is gone — instead, whichever section (blackout or
   // highlighter) matches the current mode gets a subtle background tint,
-  // so "what's currently active" reads from the section itself.
+  // so "what's currently active" reads from the section itself. The
+  // mobile quick-toggle dot rides along here too, so every existing
+  // call site keeps it in sync for free — black for ink, or whatever
+  // highlighter color is actually currently selected.
   function syncActiveSection() {
     const isHighlight = blackoutCanvas.mode === 'highlight';
     sectionBlackoutEl.classList.toggle('tool-section-active', !isHighlight);
     sectionHighlightEl.classList.toggle('tool-section-active', isHighlight);
+    fabToggleDotEl.style.background = isHighlight ? blackoutCanvas.highlightColor : '#1a1a1a';
   }
   syncActiveSection(); // reflect the default ('ink') on load
+
+  fabToggleEl.addEventListener('click', () => {
+    blackoutCanvas.setMode(blackoutCanvas.mode === 'highlight' ? 'ink' : 'highlight');
+    exitUnbrush();
+    syncActiveSection();
+  });
+
+  document.getElementById('fab-undo').addEventListener('click', () => {
+    if (blackoutCanvas.mode === 'highlight') {
+      blackoutCanvas.undoHighlight();
+    } else {
+      blackoutCanvas.undo();
+    }
+  });
 
   // Leaving unbrush mode whenever a drawing action is chosen — picking a
   // brush or a highlighter color both mean "I want to draw."
