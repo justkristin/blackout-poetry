@@ -398,6 +398,16 @@ class BlackoutCanvas {
     }
   }
 
+  // Mirrors undo() for the highlight layer — no font-lock concerns since
+  // highlighting is non-destructive to the text.
+  undoHighlight() {
+    if (this.highlights.length) {
+      this.highlights.pop();
+      this.render();
+      this.saveState();
+    }
+  }
+
   // Removes just the last point-square of the last ink stroke. If that
   // empties the stroke, the stroke itself is removed too — so holding
   // micro-undo eats through the current stroke, then rolls into the

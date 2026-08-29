@@ -698,6 +698,61 @@ main {
     display: none;
   }
 
+  /* Quick-access cluster — hidden until the main ▓ is tapped once
+     (.expanded), and hidden again whenever the full drawer is open,
+     same sibling-selector trick as the main FAB above. Nearest to
+     farthest from the main button: switch tool, undo, open drawer. */
+  .fab-mini {
+    display: none;
+    position: fixed;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-mid);
+    cursor: pointer;
+    z-index: 501;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    color: var(--text-light);
+    font-size: 1.1rem;
+  }
+
+  .sidebar-fab.expanded ~ .fab-mini {
+    display: flex;
+  }
+
+  .sidebar.sidebar-open ~ .fab-mini {
+    display: none;
+  }
+
+  #fab-toggle {
+    bottom: 86px;
+    background: var(--bg-panel-light); /* neutral panel — matches the
+      other two mini buttons; the dot inside carries the actual color,
+      same pattern as every other color swatch in this app, so a black
+      fill still reads clearly instead of vanishing into the page bg */
+  }
+
+  .fab-toggle-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: 1.5px solid #777;
+  }
+
+  #fab-undo {
+    bottom: 144px;
+    background: var(--bg-panel-light);
+  }
+
+  #fab-drawer {
+    bottom: 202px;
+    background: var(--bg-panel-light);
+  }
+
   /* Accordion affordance for section/filter labels */
   .sidebar-label,
   .filters-summary {
