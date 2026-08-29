@@ -330,12 +330,40 @@ main {
   letter-spacing: 0.02em;
 }
 
+.sidebar-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-toggle-icon {
+  display: none; /* only shown on mobile, see media query below */
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  line-height: 1;
+}
+
+.sidebar-fab {
+  display: none; /* only shown on mobile, see media query below */
+}
+
 .sidebar-label {
   font-size: 0.65rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 0.6rem;
+  display: block;
+  list-style: none;
+  cursor: default;
+}
+
+.sidebar-label::-webkit-details-marker {
+  display: none;
 }
 
 .sidebar-book-title {
@@ -570,4 +598,112 @@ main {
 .font-btn.locked {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* ── DESKTOP: neutralize the accordion behavior ──────────────────
+   .sidebar-section and .filters-accordion are <details> elements so a
+   single mobile media query can turn them into an accordion. On desktop
+   they default to `open` in the markup and just stay that way — this
+   only stops a stray click on the label from toggling one closed. */
+@media (min-width: 769px) {
+  .sidebar-section summary,
+  .filters-accordion summary {
+    pointer-events: none;
+  }
+}
+
+/* ── MOBILE LAYOUT ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .header-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+
+  .site-tagline {
+    font-size: 0.68rem;
+  }
+
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .page-area {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* The sidebar becomes a collapsible drawer, toggled by the floating
+     ▓ button. It's pushed into normal document flow below the poem
+     (not an overlay) — expanding it just pushes page content around,
+     the same way every other show/hide in this app already works. */
+  .sidebar {
+    position: static;
+    display: none;
+    width: 100%;
+  }
+
+  .sidebar.sidebar-open {
+    display: block;
+  }
+
+  .sidebar-toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-fab {
+    display: flex;
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+    color: var(--bg-darker);
+    font-size: 1.3rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    z-index: 500;
+  }
+
+  /* Only one ▓ toggle visible at a time — the FAB hides itself once the
+     sidebar (and its own inline ▓ close icon) is open. Relies on the FAB
+     being a later sibling of .sidebar in the markup. */
+  .sidebar.sidebar-open ~ .sidebar-fab {
+    display: none;
+  }
+
+  /* Accordion affordance for section/filter labels */
+  .sidebar-label,
+  .filters-summary {
+    cursor: pointer;
+    position: relative;
+    padding-right: 1.1rem;
+  }
+
+  .sidebar-label::after,
+  .filters-summary::after {
+    content: '▸';
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: var(--text-dim);
+  }
+
+  details[open] > .sidebar-label::after,
+  .filters-accordion[open] > .filters-summary::after {
+    content: '▾';
+  }
 }

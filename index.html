@@ -120,6 +120,31 @@
       color: var(--text-light);
       background: var(--bg-panel-light);
     }
+    /* filters accordion wrapper (desktop: always open, see style.css) */
+    .filters-summary {
+      list-style: none;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .filters-summary::-webkit-details-marker {
+      display: none;
+    }
+    .filters-count-badge {
+      background: var(--bg-panel-light);
+      color: var(--text-light);
+      border-radius: 999px;
+      font-size: 0.65rem;
+      padding: 1px 7px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
     /* or divider between search and filters */
     .or-divider {
       display: flex;
@@ -162,7 +187,7 @@
       </div>
       <nav class="header-nav">
         <a href="faq.html" class="nav-btn">? faq</a>
-        <button id="btn-new-random" class="nav-btn">↻ give me a page</button>
+        <button id="btn-new-random" class="nav-btn">↻ new page</button>
         <button id="btn-save" class="nav-btn nav-btn-primary">↓ save poem</button>
       </nav>
     </div>
@@ -191,21 +216,27 @@
 
         <div class="or-divider"><span>or</span></div>
 
-        <!-- Genre filter chips -->
-        <div class="filter-section">
-          <div class="filter-section-label">Genre</div>
-          <div class="chip-row" id="genre-chips"></div>
-        </div>
+        <!-- Genre + century filters, collapsible as one group on mobile -->
+        <details open class="filters-accordion" id="filters-accordion">
+          <summary class="filters-summary">
+            Filters
+            <span id="filters-count-badge" class="filters-count-badge" style="display:none;">0</span>
+          </summary>
 
-        <!-- Century filter chips -->
-        <div class="filter-section">
-          <div class="filter-section-label">Century</div>
-          <div class="chip-row" id="century-chips"></div>
-        </div>
+          <div class="filter-section">
+            <div class="filter-section-label">Genre</div>
+            <div class="chip-row" id="genre-chips"></div>
+          </div>
 
-        <!-- Clear filters — own container, so it survives the chip rows
-             being rebuilt via innerHTML whenever the manifest loads -->
-        <button class="clear-filters-btn" id="clear-filters" style="display:none">✕ clear filters</button>
+          <div class="filter-section">
+            <div class="filter-section-label">Century</div>
+            <div class="chip-row" id="century-chips"></div>
+          </div>
+
+          <!-- Clear filters — own container, so it survives the chip rows
+               being rebuilt via innerHTML whenever the manifest loads -->
+          <button class="clear-filters-btn" id="clear-filters" style="display:none">✕ clear filters</button>
+        </details>
 
         <!-- Loading state -->
         <div id="loading-state" class="loading-state">
@@ -251,51 +282,52 @@
       <!-- Redact-o-matic sidebar -->
       <aside class="sidebar">
 
-        <div class="sidebar-section">
+        <div class="sidebar-section sidebar-title-row">
           <div class="sidebar-title">Redact-o-matic</div>
+          <button id="sidebar-close" class="sidebar-toggle-icon" aria-label="Close tools">▓</button>
         </div>
 
         <!-- Book info -->
-        <div class="sidebar-section" id="book-info" style="display:none;">
-          <div class="sidebar-label">source</div>
+        <details open class="sidebar-section" id="book-info" style="display:none;">
+          <summary class="sidebar-label">source</summary>
           <div id="sidebar-book-title" class="sidebar-book-title"></div>
           <div id="sidebar-book-author" class="sidebar-book-author"></div>
           <div id="sidebar-book-links"></div>
-        </div>
+        </details>
 
         <!-- Page color -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">page color</div>
+        <details open class="sidebar-section">
+          <summary class="sidebar-label">page color</summary>
           <div class="color-row">
             <button class="color-btn active" data-color="#faf8f3" title="cream" style="background:#faf8f3;"></button>
             <button class="color-btn" data-color="#ffffff" title="white" style="background:#ffffff;"></button>
             <button class="color-btn" data-color="#f0e6d0" title="aged" style="background:#f0e6d0;"></button>
             <button class="color-btn" data-color="#e8e4d0" title="newsprint" style="background:#e8e4d0;"></button>
           </div>
-        </div>
+        </details>
 
         <!-- Font -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">font</div>
+        <details open class="sidebar-section">
+          <summary class="sidebar-label">font</summary>
           <div class="font-row">
             <button class="font-btn active" data-font="Lora" title="Font locks after your first stroke — undo all strokes to change">Lora</button>
             <button class="font-btn" data-font="IM Fell English" title="Font locks after your first stroke — undo all strokes to change">Fell</button>
             <button class="font-btn" data-font="Lexend" title="Font locks after your first stroke — undo all strokes to change">Lexend</button>
           </div>
-        </div>
+        </details>
 
         <!-- Line drawing type -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">line drawing type</div>
+        <details open class="sidebar-section">
+          <summary class="sidebar-label">line drawing type</summary>
           <div class="linemode-row">
             <button id="linemode-freehand" class="linemode-btn active" data-linemode="freehand">freehand</button>
             <button id="linemode-line" class="linemode-btn" data-linemode="line">line tool</button>
           </div>
-        </div>
+        </details>
 
         <!-- Blackout tools (brush size + editing, one container — no internal divider) -->
-        <div class="sidebar-section" id="section-blackout">
-          <div class="sidebar-label">blackout brush size</div>
+        <details open class="sidebar-section" id="section-blackout">
+          <summary class="sidebar-label">blackout brush size</summary>
           <div class="brush-row">
             <button class="brush-btn" data-size="3" title="pen">
               <span class="brush-dot brush-pen"></span>
@@ -313,11 +345,11 @@
           <button id="btn-undo" class="sidebar-action-btn">↩ undo last blackout stroke</button>
           <button id="btn-micro-undo" class="sidebar-action-btn">↩ micro-undo (last blackout square)</button>
           <button id="btn-unbrush-ink" class="sidebar-action-btn unbrush-btn">⌫ select blackout to remove (tap a stroke)</button>
-        </div>
+        </details>
 
         <!-- Highlighter color -->
-        <div class="sidebar-section" id="section-highlight">
-          <div class="sidebar-label">highlighter color</div>
+        <details open class="sidebar-section" id="section-highlight">
+          <summary class="sidebar-label">highlighter color</summary>
           <div class="color-row">
             <button class="highlight-color-btn active" data-color="#fff176" title="yellow" style="background:#fff176;"></button>
             <button class="highlight-color-btn" data-color="#ff8a80" title="pink" style="background:#ff8a80;"></button>
@@ -326,24 +358,24 @@
           </div>
           <button id="btn-clear-highlights" class="sidebar-action-btn">clear all highlights</button>
           <button id="btn-unbrush-highlight" class="sidebar-action-btn unbrush-btn">⌫ select highlight to remove (tap a stroke)</button>
-        </div>
+        </details>
 
         <!-- Save shape -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">save shape</div>
+        <details open class="sidebar-section">
+          <summary class="sidebar-label">save shape</summary>
           <div class="shape-row">
             <button id="shape-portrait" class="shape-btn active" data-shape="portrait">portrait</button>
             <button id="shape-square" class="shape-btn" data-shape="square">square</button>
           </div>
-        </div>
+        </details>
 
         <!-- Actions -->
-        <div class="sidebar-section">
-          <div class="sidebar-label">when you're done</div>
+        <details open class="sidebar-section">
+          <summary class="sidebar-label">when you're done</summary>
           <button id="btn-save-sidebar" class="sidebar-action-btn sidebar-action-primary">↓ save poem</button>
           <button id="btn-share" class="sidebar-action-btn">↗ share</button>
           <button id="btn-start-over" class="sidebar-action-btn">✕ start over</button>
-        </div>
+        </details>
 
         <!-- Attribution -->
         <div class="sidebar-section sidebar-attribution">
@@ -352,6 +384,8 @@
         </div>
 
       </aside>
+
+      <button id="sidebar-open-fab" class="sidebar-fab" aria-label="Open tools">▓</button>
 
     </div>
   </main>

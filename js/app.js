@@ -30,6 +30,7 @@
   const genreChipsEl     = document.getElementById('genre-chips');
   const centuryChipsEl   = document.getElementById('century-chips');
   const clearFiltersEl   = document.getElementById('clear-filters');
+  const filtersCountBadgeEl = document.getElementById('filters-count-badge');
   const bookInputEl      = document.getElementById('book-search');
   const autocompleteEl   = document.getElementById('autocomplete-list');
 
@@ -43,6 +44,23 @@
 
   // ── INIT ───────────────────────────────────────────────────────────
   blackoutCanvas = new BlackoutCanvas(canvasEl);
+
+  // On a narrow (mobile) viewport, every accordion starts collapsed —
+  // the markup defaults them all to `open` so desktop, and anyone
+  // without JS, just sees everything expanded as before.
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    document.querySelectorAll('.sidebar-section, .filters-accordion').forEach(d => {
+      d.removeAttribute('open');
+    });
+  }
+
+  const sidebarEl = document.querySelector('.sidebar');
+  document.getElementById('sidebar-open-fab').addEventListener('click', () => {
+    sidebarEl.classList.add('sidebar-open');
+  });
+  document.getElementById('sidebar-close').addEventListener('click', () => {
+    sidebarEl.classList.remove('sidebar-open');
+  });
 
   const storageWarningEl = document.getElementById('storage-warning');
   document.getElementById('storage-warning-dismiss').addEventListener('click', () => {
@@ -138,8 +156,11 @@
     centuryChipsEl.querySelectorAll('.filter-chip').forEach(btn => {
       btn.classList.toggle('active', selectedCenturies.has(btn.dataset.century));
     });
-    const hasFilters = selectedGenres.size > 0 || selectedCenturies.size > 0;
+    const count = selectedGenres.size + selectedCenturies.size;
+    const hasFilters = count > 0;
     clearFiltersEl.style.display = hasFilters ? '' : 'none';
+    filtersCountBadgeEl.textContent = count;
+    filtersCountBadgeEl.style.display = hasFilters ? '' : 'none';
   }
 
   // ── BOOK AUTOCOMPLETE ──────────────────────────────────────────────
