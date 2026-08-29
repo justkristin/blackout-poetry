@@ -55,12 +55,28 @@
   }
 
   const sidebarEl = document.querySelector('.sidebar');
-  document.getElementById('sidebar-open-fab').addEventListener('click', () => {
+  let sidebarSavedScrollY = 0;
+
+  function openSidebar() {
+    sidebarSavedScrollY = window.scrollY;
+    // iOS Safari doesn't reliably respect `overflow:hidden` on body to
+    // stop background scroll — pinning it with `position:fixed` does.
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${sidebarSavedScrollY}px`;
+    document.body.style.width = '100%';
     sidebarEl.classList.add('sidebar-open');
-  });
-  document.getElementById('sidebar-close').addEventListener('click', () => {
+  }
+
+  function closeSidebar() {
     sidebarEl.classList.remove('sidebar-open');
-  });
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, sidebarSavedScrollY);
+  }
+
+  document.getElementById('sidebar-open-fab').addEventListener('click', openSidebar);
+  document.getElementById('sidebar-close').addEventListener('click', closeSidebar);
 
   const storageWarningEl = document.getElementById('storage-warning');
   document.getElementById('storage-warning-dismiss').addEventListener('click', () => {

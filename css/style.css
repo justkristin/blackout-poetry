@@ -639,18 +639,31 @@ main {
     max-width: none;
   }
 
-  /* The sidebar becomes a collapsible drawer, toggled by the floating
-     ▓ button. It's pushed into normal document flow below the poem
-     (not an overlay) — expanding it just pushes page content around,
-     the same way every other show/hide in this app already works. */
+  /* The sidebar becomes a full-screen overlay on mobile, toggled by the
+     floating ▓ button. Since it covers the whole viewport, the poem's
+     scroll position never changes underneath it — opening and closing
+     is a single tap either direction, nothing to scroll back to. */
   .sidebar {
     position: static;
     display: none;
     width: 100%;
+    overflow: visible;
   }
 
   .sidebar.sidebar-open {
     display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0;
+    border: none;
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
   }
 
   .sidebar-toggle-icon {
