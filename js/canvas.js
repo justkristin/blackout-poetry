@@ -501,90 +501,116 @@ class BlackoutCanvas {
     const contentW = this.canvas.width;
     const contentH = headerH + this.canvas.height + footerInfoH + attributionH;
 
-    // Square mode pads out to a square by centering the natural (portrait)
-    // content on the larger dimension — it doesn't scale or crop anything.
-    let finalW = contentW;
-    let finalH = contentH;
-    let xOffset = 0;
-    let yOffset = 0;
-    if (this.exportShape === 'square') {
-      const side = Math.max(contentW, contentH);
-      finalW = side;
-      finalH = side;
-      xOffset = (side - contentW) / 2;
-      yOffset = (side - contentH) / 2;
-    }
+    // ── Build the full portrait composition first, always — this part is
+    // identical regardless of save shape. ──
+    const fullCanvas = document.createElement('canvas');
+    fullCanvas.width = contentW;
+    fullCanvas.height = contentH;
+    const fCtx = fullCanvas.getContext('2d');
+    const cx = contentW / 2;
 
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = finalW;
-    tempCanvas.height = finalH;
-    const tCtx = tempCanvas.getContext('2d');
-    const w = contentW;
-    const cx = w / 2;
-
-    // Page-color background behind the whole export (including any padding)
-    tCtx.fillStyle = this.pageColor;
-    tCtx.fillRect(0, 0, finalW, finalH);
-
-    // Shift all the content-space drawing below onto its centered position —
-    // everything from here down is written exactly as if drawing a plain
-    // portrait image at (0,0).
-    tCtx.save();
-    tCtx.translate(xOffset, yOffset);
+    fCtx.fillStyle = this.pageColor;
+    fCtx.fillRect(0, 0, contentW, contentH);
 
     // ── Header: book title + chapter, mirroring .book-page-header ──
-    tCtx.textAlign = 'center';
-    tCtx.textBaseline = 'alphabetic';
-    tCtx.fillStyle = '#666';
-    tCtx.font = `italic 13px 'Lora', Georgia, serif`;
-    tCtx.fillText(book.title || '', cx, 22);
+    fCtx.textAlign = 'center';
+    fCtx.textBaseline = 'alphabetic';
+    fCtx.fillStyle = '#666';
+    fCtx.font = `italic 13px 'Lora', Georgia, serif`;
+    fCtx.fillText(book.title || '', cx, 22);
 
     if (page.chapter) {
-      tCtx.fillStyle = '#aaa';
-      tCtx.font = `11px 'Lexend', Arial, sans-serif`;
-      tCtx.fillText(page.chapter, cx, 38);
+      fCtx.fillStyle = '#aaa';
+      fCtx.font = `11px 'Lexend', Arial, sans-serif`;
+      fCtx.fillText(page.chapter, cx, 38);
     }
 
-    tCtx.strokeStyle = '#ccc';
-    tCtx.lineWidth = 1;
-    tCtx.beginPath();
-    tCtx.moveTo(sidePad, headerH - 8);
-    tCtx.lineTo(w - sidePad, headerH - 8);
-    tCtx.stroke();
+    fCtx.strokeStyle = '#ccc';
+    fCtx.lineWidth = 1;
+    fCtx.beginPath();
+    fCtx.moveTo(sidePad, headerH - 8);
+    fCtx.lineTo(contentW - sidePad, headerH - 8);
+    fCtx.stroke();
 
     // ── The poem itself ──
-    tCtx.drawImage(this.canvas, 0, headerH);
+    fCtx.drawImage(this.canvas, 0, headerH);
 
     // ── Footer: author + page number, mirroring .book-page-footer ──
     const footerTop = headerH + this.canvas.height;
-    tCtx.strokeStyle = '#ccc';
-    tCtx.beginPath();
-    tCtx.moveTo(sidePad, footerTop + 8);
-    tCtx.lineTo(w - sidePad, footerTop + 8);
-    tCtx.stroke();
+    fCtx.strokeStyle = '#ccc';
+    fCtx.beginPath();
+    fCtx.moveTo(sidePad, footerTop + 8);
+    fCtx.lineTo(contentW - sidePad, footerTop + 8);
+    fCtx.stroke();
 
-    tCtx.font = `italic 11px 'Lora', Georgia, serif`;
-    tCtx.fillStyle = '#aaa';
-    tCtx.textAlign = 'left';
-    tCtx.fillText(authorLine, sidePad, footerTop + 26);
-    tCtx.textAlign = 'right';
-    tCtx.fillText(pageLine, w - sidePad, footerTop + 26);
+    fCtx.font = `italic 11px 'Lora', Georgia, serif`;
+    fCtx.fillStyle = '#aaa';
+    fCtx.textAlign = 'left';
+    fCtx.fillText(authorLine, sidePad, footerTop + 26);
+    fCtx.textAlign = 'right';
+    fCtx.fillText(pageLine, contentW - sidePad, footerTop + 26);
 
-    // ── Attribution footer (unchanged) ──
+    // ── Attribution footer ──
     const attribTop = footerTop + footerInfoH;
-    tCtx.fillStyle = '#aaa';
-    tCtx.font = `11px Arial, sans-serif`;
-    tCtx.textAlign = 'left';
-    tCtx.textBaseline = 'middle';
-    tCtx.fillText(
+    fCtx.fillStyle = '#aaa';
+    fCtx.font = `11px Arial, sans-serif`;
+    fCtx.textAlign = 'left';
+    fCtx.textBaseline = 'middle';
+    fCtx.fillText(
       `${window.location.hostname} · text from Project Gutenberg`,
       10,
       attribTop + attributionH / 2
     );
 
-    tCtx.restore();
+    // ── Square mode: split into two "book pages" side by side, like an
+    // open book, instead of padding a tall image down until the text is
+    // unreadably small. Same pixels, just reflowed — nothing shrinks. ──
+    let finalCanvas = fullCanvas;
 
-    tempCanvas.toBlob(blob => {
+    if (this.exportShape === 'square') {
+      const gutter = 16;
+      const halfH = Math.round(contentH / 2);
+      const composedW = contentW * 2 + gutter;
+      const composedH = halfH;
+
+      const pagesCanvas = document.createElement('canvas');
+      pagesCanvas.width = composedW;
+      pagesCanvas.height = composedH;
+      const pCtx = pagesCanvas.getContext('2d');
+
+      pCtx.fillStyle = this.pageColor;
+      pCtx.fillRect(0, 0, composedW, composedH);
+
+      // Left page: top half. Right page: bottom half.
+      pCtx.drawImage(fullCanvas, 0, 0, contentW, halfH, 0, 0, contentW, halfH);
+      pCtx.drawImage(
+        fullCanvas, 0, halfH, contentW, contentH - halfH,
+        contentW + gutter, 0, contentW, contentH - halfH
+      );
+
+      // Gutter divider, like the spine of an open book
+      pCtx.strokeStyle = '#ccc';
+      pCtx.lineWidth = 1;
+      pCtx.beginPath();
+      pCtx.moveTo(contentW + gutter / 2, 8);
+      pCtx.lineTo(contentW + gutter / 2, composedH - 8);
+      pCtx.stroke();
+
+      // Pad this two-page spread to a square, same centering approach
+      // portrait-padding already used, just on the new dimensions.
+      const side = Math.max(composedW, composedH);
+      const sqCanvas = document.createElement('canvas');
+      sqCanvas.width = side;
+      sqCanvas.height = side;
+      const sqCtx = sqCanvas.getContext('2d');
+      sqCtx.fillStyle = this.pageColor;
+      sqCtx.fillRect(0, 0, side, side);
+      sqCtx.drawImage(pagesCanvas, (side - composedW) / 2, (side - composedH) / 2);
+
+      finalCanvas = sqCanvas;
+    }
+
+    finalCanvas.toBlob(blob => {
       const file = new File([blob], filename, { type: 'image/png' });
       if (allowShare && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         navigator.share({

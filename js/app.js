@@ -50,7 +50,7 @@
   // without JS, just sees everything expanded as before.
   if (window.matchMedia('(max-width: 768px)').matches) {
     document.querySelectorAll('.sidebar-section, .filters-accordion').forEach(d => {
-      d.removeAttribute('open');
+      if (d.id !== 'book-info') d.removeAttribute('open'); // Source stays open — a visible link to what you're already working on
     });
   }
 
@@ -504,7 +504,22 @@
   });
 
   // ── SAVE / SHARE ───────────────────────────────────────────────────
-  const doSave  = () => blackoutCanvas.download(currentBookData?.title);
+  // iOS Safari has no way to save a file straight into Photos — the
+  // share sheet's "Save Image" is the only path there. So "save poem"
+  // goes through share() on iOS specifically (worth the extra tap to
+  // land in Photos), and stays a plain direct download everywhere else.
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS reports as Mac
+  }
+
+  const doSave  = () => {
+    if (isIOS()) {
+      blackoutCanvas.share(currentBookData?.title);
+    } else {
+      blackoutCanvas.download(currentBookData?.title);
+    }
+  };
   const doShare = () => blackoutCanvas.share(currentBookData?.title);
   document.getElementById('btn-save').addEventListener('click', doSave);
   document.getElementById('btn-save-sidebar').addEventListener('click', doSave);
