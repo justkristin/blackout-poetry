@@ -6,7 +6,7 @@
   <title>FAQ — Blackout</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=IM+Fell+English:ital@0;1&family=Lexend&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1">
   <style>
     .faq-layout {
       max-width: 720px;
@@ -231,14 +231,14 @@
       <details class="faq-item">
         <summary>What's the difference between "save poem" and "share"?</summary>
         <div class="faq-answer">
-          <p><code>save poem</code> always downloads the finished image straight to your device — no extra dialog. <code>share</code> opens your device or browser's native share sheet instead, so you can send it directly to Messages, AirDrop, or wherever, if that's supported where you're using this.</p>
+          <p><code>save poem</code> always saves the finished image to your device. On most browsers that's a direct download, no extra dialog — but on an iPhone or iPad it opens the share sheet instead and asks you to tap "Save Image," since that's the only way a website can actually save a photo into your Photos library there. <code>share</code> always opens that same native share sheet, on any device, so you can send the image straight to Messages, AirDrop, or wherever else, rather than just saving it.</p>
         </div>
       </details>
 
       <details class="faq-item">
         <summary>What's "save shape"?</summary>
         <div class="faq-answer">
-          <p>Portrait keeps the image's natural height — most pages are taller than they are wide. Square pads the image out evenly on the shorter side so it fits a 1:1 frame, handy for posting somewhere that expects square images. On a very long poem, square mode can leave a fair amount of empty margin on the sides — worth a glance before sharing.</p>
+          <p>Portrait keeps the image's natural height — most pages are taller than they are wide. Square fits everything into a 1:1 frame — but instead of always padding or shrinking, it automatically checks whether splitting the page into two side-by-side halves (like an open book) would waste less space than padding a single tall column would. On a narrow screen, splitting usually wins; on a wide screen, or for a short poem, plain padding usually wins. Either way, the text itself never shrinks — only the layout changes.</p>
         </div>
       </details>
 
@@ -253,6 +253,23 @@
         <summary>I saw a warning that my progress isn't being saved — what does that mean?</summary>
         <div class="faq-answer">
           <p>Some browser settings — private/incognito windows especially — block the local storage this tool uses to remember your in-progress poem between reloads. If you see that warning, your work is still fine as long as you don't reload or close the tab; just save the image when you're done rather than counting on it still being there later.</p>
+        </div>
+      </details>
+
+      <div class="faq-section-label">On a small screen</div>
+
+      <details class="faq-item">
+        <summary>Where did the sidebar go on my phone?</summary>
+        <div class="faq-answer">
+          <p>It's tucked behind the small ▓ button in the bottom corner. Tap it once and three small buttons appear above it: a pen/highlighter switch, undo, and a button shaped like a little open drawer — that one opens the full set of tools (colors, brush sizes, fonts, save shape, all of it) as a full-screen panel. Tap ▓ again to put the quick buttons away.</p>
+          <p>The pen/highlighter and undo buttons are there for the fast back-and-forth of actually drawing, so you're not opening the full panel for every small adjustment — they stay put once revealed, so after the first tap, switching tools or undoing is back to a single tap each.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Where are the genre and century filters on my phone?</summary>
+        <div class="faq-answer">
+          <p>They collapse into a single "Filters" row above the page, with a small number badge showing how many are currently active. Tap it to expand the genre and century chips, same as on a larger screen — they just stay out of the way until you need them.</p>
         </div>
       </details>
 
