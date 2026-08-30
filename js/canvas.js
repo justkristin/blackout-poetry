@@ -478,6 +478,27 @@ class BlackoutCanvas {
   // allowShare=true opens the OS share sheet when the browser supports it
   // (nice for AirDrop/Messages); allowShare=false always saves the file
   // straight to disk, no sheet, no prompt.
+  // Finds the Y position (in fullCanvas space) closest to idealY that
+  // still falls in the gap between two lines of the poem, rather than
+  // through the middle of one — used so the square split never slices
+  // a line of text in half.
+  findSafeSplitY(headerH, idealY) {
+    if (!this.lines || !this.lines.length) return idealY;
+    const padding = 20;
+    let y = headerH + padding;
+    let best = y;
+    let bestDist = Math.abs(y - idealY);
+    for (const line of this.lines) {
+      y += line.isBlank ? this.blankLineH : this.lineH;
+      const dist = Math.abs(y - idealY);
+      if (dist < bestDist) {
+        best = y;
+        bestDist = dist;
+      }
+    }
+    return best;
+  }
+
   exportImage(title, allowShare) {
     this.cancelPendingLine(); // never bake a stray marker dot into a saved file
     const filename = (title || 'blackout-poem')
@@ -576,9 +597,12 @@ class BlackoutCanvas {
       const portraitWaste = portraitSide * portraitSide - contentW * contentH;
 
       const gutter = 16;
-      const halfH = Math.round(contentH / 2);
+      const halfH = this.findSafeSplitY(headerH, contentH / 2);
       const composedW = contentW * 2 + gutter;
-      const composedH = halfH;
+      // The snapped split point won't be exactly centered, so the two
+      // pages can differ slightly in height — size the canvas to the
+      // taller of the two so neither one gets clipped.
+      const composedH = Math.max(halfH, contentH - halfH);
       const splitSide = Math.max(composedW, composedH);
       const splitWaste = splitSide * splitSide - composedW * composedH;
 
