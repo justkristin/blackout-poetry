@@ -562,52 +562,73 @@ class BlackoutCanvas {
       attribTop + attributionH / 2
     );
 
-    // ── Square mode: split into two "book pages" side by side, like an
-    // open book, instead of padding a tall image down until the text is
-    // unreadably small. Same pixels, just reflowed — nothing shrinks. ──
+    // ── Square mode: split into two "book pages" side by side ONLY when
+    // that actually produces a squarer (less padded) result than plain
+    // portrait padding would. On a narrow canvas (mobile) splitting
+    // usually helps a lot; on a wide canvas (desktop) or a short poem,
+    // doubling an already-wide column overshoots the height and wastes
+    // more space than it saves — so compare both and pick whichever
+    // pads less, rather than guessing from device/viewport width. ──
     let finalCanvas = fullCanvas;
 
     if (this.exportShape === 'square') {
+      const portraitSide = Math.max(contentW, contentH);
+      const portraitWaste = portraitSide * portraitSide - contentW * contentH;
+
       const gutter = 16;
       const halfH = Math.round(contentH / 2);
       const composedW = contentW * 2 + gutter;
       const composedH = halfH;
+      const splitSide = Math.max(composedW, composedH);
+      const splitWaste = splitSide * splitSide - composedW * composedH;
 
-      const pagesCanvas = document.createElement('canvas');
-      pagesCanvas.width = composedW;
-      pagesCanvas.height = composedH;
-      const pCtx = pagesCanvas.getContext('2d');
+      if (splitWaste < portraitWaste) {
+        // Split into two pages, like an open book.
+        const pagesCanvas = document.createElement('canvas');
+        pagesCanvas.width = composedW;
+        pagesCanvas.height = composedH;
+        const pCtx = pagesCanvas.getContext('2d');
 
-      pCtx.fillStyle = this.pageColor;
-      pCtx.fillRect(0, 0, composedW, composedH);
+        pCtx.fillStyle = this.pageColor;
+        pCtx.fillRect(0, 0, composedW, composedH);
 
-      // Left page: top half. Right page: bottom half.
-      pCtx.drawImage(fullCanvas, 0, 0, contentW, halfH, 0, 0, contentW, halfH);
-      pCtx.drawImage(
-        fullCanvas, 0, halfH, contentW, contentH - halfH,
-        contentW + gutter, 0, contentW, contentH - halfH
-      );
+        // Left page: top half. Right page: bottom half.
+        pCtx.drawImage(fullCanvas, 0, 0, contentW, halfH, 0, 0, contentW, halfH);
+        pCtx.drawImage(
+          fullCanvas, 0, halfH, contentW, contentH - halfH,
+          contentW + gutter, 0, contentW, contentH - halfH
+        );
 
-      // Gutter divider, like the spine of an open book
-      pCtx.strokeStyle = '#ccc';
-      pCtx.lineWidth = 1;
-      pCtx.beginPath();
-      pCtx.moveTo(contentW + gutter / 2, 8);
-      pCtx.lineTo(contentW + gutter / 2, composedH - 8);
-      pCtx.stroke();
+        // Gutter divider, like the spine of an open book
+        pCtx.strokeStyle = '#ccc';
+        pCtx.lineWidth = 1;
+        pCtx.beginPath();
+        pCtx.moveTo(contentW + gutter / 2, 8);
+        pCtx.lineTo(contentW + gutter / 2, composedH - 8);
+        pCtx.stroke();
 
-      // Pad this two-page spread to a square, same centering approach
-      // portrait-padding already used, just on the new dimensions.
-      const side = Math.max(composedW, composedH);
-      const sqCanvas = document.createElement('canvas');
-      sqCanvas.width = side;
-      sqCanvas.height = side;
-      const sqCtx = sqCanvas.getContext('2d');
-      sqCtx.fillStyle = this.pageColor;
-      sqCtx.fillRect(0, 0, side, side);
-      sqCtx.drawImage(pagesCanvas, (side - composedW) / 2, (side - composedH) / 2);
+        const sqCanvas = document.createElement('canvas');
+        sqCanvas.width = splitSide;
+        sqCanvas.height = splitSide;
+        const sqCtx = sqCanvas.getContext('2d');
+        sqCtx.fillStyle = this.pageColor;
+        sqCtx.fillRect(0, 0, splitSide, splitSide);
+        sqCtx.drawImage(pagesCanvas, (splitSide - composedW) / 2, (splitSide - composedH) / 2);
 
-      finalCanvas = sqCanvas;
+        finalCanvas = sqCanvas;
+      } else {
+        // Plain portrait content, centered and padded to a square —
+        // no split needed, it wouldn't have helped here.
+        const sqCanvas = document.createElement('canvas');
+        sqCanvas.width = portraitSide;
+        sqCanvas.height = portraitSide;
+        const sqCtx = sqCanvas.getContext('2d');
+        sqCtx.fillStyle = this.pageColor;
+        sqCtx.fillRect(0, 0, portraitSide, portraitSide);
+        sqCtx.drawImage(fullCanvas, (portraitSide - contentW) / 2, (portraitSide - contentH) / 2);
+
+        finalCanvas = sqCanvas;
+      }
     }
 
     finalCanvas.toBlob(blob => {
